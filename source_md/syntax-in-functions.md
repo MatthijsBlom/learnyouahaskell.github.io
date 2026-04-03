@@ -478,8 +478,8 @@ It's a common idiom to make a function and define some helper function in its `w
 ## Let it be {#let-it-be}
 
 Very similar to `where` bindings are `let` bindings.
-`where` bindings are a syntactic construct that let you bind to variables at the end of a function and the whole function can see them, including all the guards.
-`let` bindings let you bind to variables anywhere and are expressions themselves, but are very local, so they don't span across guards.
+`where` blocks are a syntactic construct that let you bind to variables at the end of a function and the whole function can see them, including all the guards.
+`let` expressions let you bind to variables anywhere and are expressions themselves, but are very local, so they don't span across guards.
 Just like any construct in Haskell that is used to bind values to names, `let` bindings can be used for pattern matching.
 Let's see them in action!
 This is how we could define a function that gives us a cylinder's surface area based on its height and radius:
@@ -602,7 +602,7 @@ Many imperative languages (C, C++, Java, etc.) have case syntax and if you've ev
 It's about taking a variable and then executing blocks of code for specific values of that variable and then maybe including a catch-all block of code in case the variable has some value for which we didn't set up a case.
 
 Haskell takes that concept and one-ups it.
-Like the name implies, `case` expressions are, well, expressions, much like `if`--`else` expressions and `let` bindings.
+Like the name implies, `case` expressions are, well, expressions, much like `if`--`else` expressions and `let` expressions.
 Not only can we evaluate expressions based on the possible cases of the value of a variable, we can also do pattern matching.
 Hmmm, taking a variable, pattern matching it, evaluating pieces of code based on its value, where have we heard this before?
 Oh yeah, pattern matching on parameters in function definitions!
