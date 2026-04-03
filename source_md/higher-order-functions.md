@@ -216,7 +216,7 @@ If the type declaration of a function says it accepts an `a -> b -> c` function 
 Remember that when you're making functions, especially higher order ones, and you're unsure of the type, you can just try omitting the type declaration and then checking what Haskell infers it to be by using `:t`.
 
 The action in the function is pretty similar to the normal `zip`.
-The edge conditions are the same, only there's an extra argument, the joining function, but that argument doesn't matter in the edge conditions, so we just use a `_` for it.
+The base cases are the same, only there's an extra argument, the joining function, but that argument doesn't matter in the base cases, so we just use a `_` for it.
 And function body at the last pattern is also similar to `zip`, only it doesn't do `(x,y)`, but `f x y`.
 A single higher order function can be used for a multitude of different tasks if it's general enough.
 Here's a little demonstration of all the different things our `zipWith'` function can do:
@@ -437,7 +437,7 @@ chain n
     | odd n  =  n:chain (n*3 + 1)
 ```
 
-Because the chains end at 1, that's the edge case.
+Because the chains end at 1, that's the base case.
 This is a pretty standard recursive function.
 
 ```{.haskell:ghci}
@@ -562,7 +562,7 @@ So use lambdas in this way when you want to make it explicit that your function 
 ![folded bird](assets/images/higher-order-functions/origami.png){.right width=220 height=221}
 
 Back when we were dealing with recursion, we noticed a theme throughout many of the recursive functions that operated on lists.
-Usually, we'd have an edge case for the empty list.
+Usually, we'd have a base case for the empty list.
 We'd introduce the `x:xs` pattern and then we'd do some action that involves a single element and the rest of the list.
 It turns out this is a very common pattern, so a couple of very useful functions were introduced to encapsulate it.
 These functions are called folds.

@@ -1146,7 +1146,7 @@ treeInsert x (Node a left right)
 ```
 
 The `singleton` function is just a shortcut for making a node that has something and then two empty subtrees.
-In the insertion function, we first have the edge condition as a pattern.
+In the insertion function, we first have the base case as a pattern.
 If we've reached an empty subtree, that means we're where we want and instead of the empty tree, we put a singleton tree with our element.
 If we're not inserting into an empty tree, then we have to check some things.
 First off, if the element we're inserting is equal to the root element, just return a tree that's the same.
@@ -1154,10 +1154,10 @@ If it's smaller, return a tree that has the same root value, the same right subt
 Same (but the other way around) goes if our value is bigger than the root element.
 
 Next up, we're going to make a function that checks if some element is in the tree.
-First, let's define the edge condition.
+First, let's define the base case.
 If we're looking for an element in an empty tree, then it's certainly not there.
 Okay.
-Notice how this is the same as the edge condition when searching for elements in lists.
+Notice how this is the same as the base case when searching for elements in lists.
 If we're looking for an element in an empty list, it's not there.
 Anyway, if we're not looking for an element in an empty tree, then we check some things.
 If the element in the root node is what we're looking for, great!

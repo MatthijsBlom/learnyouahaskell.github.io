@@ -203,7 +203,7 @@ length' (_:xs) = 1 + length' xs
 
 This is similar to the factorial function we wrote earlier.
 First we defined the result of a known input --- the empty list.
-This is also known as the edge condition.
+This is also known as the base case.
 Then in the second pattern we take the list apart by splitting it into a head and a tail.
 We say that the length is equal to 1 plus the length of the tail.
 We use `_` to match the head because we don't actually care what it is.

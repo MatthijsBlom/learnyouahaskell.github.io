@@ -392,7 +392,7 @@ teh
 ```
 
 `putStr` is actually defined recursively with the help of `putChar`.
-The edge condition of `putStr` is the empty string, so if we're printing an empty string, just return an I/O action that does nothing by using `return ()`.
+The base case of `putStr` is the empty string, so if we're printing an empty string, just return an I/O action that does nothing by using `return ()`.
 If it's not empty, then print the first character of the string by doing `putChar` and then print the remainder using `putStr` recursively.
 
 ```{.haskell:hs}
@@ -404,7 +404,7 @@ putStr (x:xs) = do
 ```
 
 See how we can use recursion in I/O, just like we can use it in pure code.
-Just like in pure code, we define the edge case and then think what the result actually is.
+Just like in pure code, we define the base case and then think what the result actually is.
 It's an action that first outputs the first character and then outputs the rest of the string.
 
 `print`{.label .function} takes a value of any type that's an instance of `Show` (meaning that we know how to represent it as a string), calls `show` with that value to stringify it and then outputs that string to the terminal.

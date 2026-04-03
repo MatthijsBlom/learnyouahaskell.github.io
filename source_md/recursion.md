@@ -22,7 +22,7 @@ Then we say that for any other natural number, that fibonacci number is the sum 
 So *F(n) = F(n-1) + F(n-2)*.
 That way, *F(3)* is *F(2) + F(1)*, which is *(F(1) + F(0)) + F(1)*.
 Because we've now come down to only non-recursively defined fibonacci numbers, we can safely say that *F(3)* is 2.
-Having an element or two in a recursion definition defined non-recursively (like *F(0)* and *F(1)* here) is also called the **edge condition** and is important if you want your recursive function to terminate.
+Having an element or two in a recursion definition defined non-recursively (like *F(0)* and *F(1)* here) is also called the **base case** and is important if you want your recursive function to terminate.
 If we hadn't defined *F(0)* and *F(1)* non recursively, you'd never get a solution any number because you'd reach 0 and then you'd go into negative numbers.
 All of a sudden, you'd be saying that *F(-2000)* is *F(-2001) + F(-2002)* and there still wouldn't be an end in sight!
 
@@ -39,7 +39,7 @@ Whew!
 That's quite a lot of words to describe such a simple algorithm!
 
 Now let's see how we'd define it recursively.
-We could first set up an edge condition and say that the maximum of a singleton list is equal to the only element in it.
+We could first set up a base case and say that the maximum of a singleton list is equal to the only element in it.
 Then we can say that the maximum of a longer list is the head if the head is bigger than the maximum of the tail.
 If the maximum of the tail is bigger, well, then it's the maximum of the tail.
 That's it!
@@ -56,12 +56,12 @@ maximum' (x:xs)
 ```
 
 As you can see, pattern matching goes great with recursion!
-Most imperative languages don't have pattern matching so you have to make a lot of if else statements to test for edge conditions.
+Most imperative languages don't have pattern matching so you have to make a lot of if else statements to test for base cases.
 Here, we simply put them out as patterns.
-So the first edge condition says that if the list is empty, crash!
+So the first base case says that if the list is empty, crash!
 Makes sense because what's the maximum of an empty list?
 I don't know.
-The second pattern also lays out an edge condition.
+The second pattern also lays out a base case.
 It says that if it's the singleton list, just give back the only element.
 
 Now the third pattern is where the action happens.
@@ -78,7 +78,7 @@ The third one will and the list is split into `2` and `[5,1]`.
 The `where` block wants to know the maximum of `[5,1]`, so we follow that route.
 It matches the third pattern again and `[5,1]` is split into `5` and `[1]`.
 Again, the `where` block wants to know the maximum of `[1]`.
-Because that's the edge condition, it returns `1`.
+Because that's the base case, it returns `1`.
 Finally!
 So going up one step, comparing `5` to the maximum of `[1]` (which is `1`), we obviously get back `5`.
 So now we know that the maximum of `[5,1]` is `5`.
@@ -107,8 +107,8 @@ Now that we know how to generally think recursively, let's implement a few funct
 First off, we'll implement `replicate`.
 `replicate` takes an `Int` and some element and returns a list that has several repetitions of the same element.
 For instance, `replicate 3 5` returns `[5,5,5]`.
-Let's think about the edge condition.
-My guess is that the edge condition is 0 or less.
+Let's think about the base case.
+My guess is that the base case is 0 or less.
 If we try to replicate something zero times, it should return an empty list.
 Also for negative numbers, because it doesn't really make sense.
 
@@ -122,7 +122,7 @@ replicate' n x
 We used guards here instead of patterns because we're testing for a boolean condition.
 If `n` is less than or equal to 0, return an empty list.
 Otherwise, return a list that has `x` as the first element and then `x` replicated n-1 times as the tail.
-Eventually, the `(n-1)` part will cause our function to reach the edge condition.
+Eventually, the `(n-1)` part will cause our function to reach the base case.
 
 ::: {.hintbox}
 **Note:** `Num` is not a subclass of `Ord`.
@@ -135,7 +135,7 @@ It takes a certain number of elements from a list.
 For instance, `take 3 [5,4,3,2,1]` will return `[5,4,3]`.
 If we try to take 0 or fewer elements from a list, we get an empty list.
 Also if we try to take anything from an empty list, we get an empty list.
-Notice that those are two edge conditions right there.
+Notice that those are two base cases right there.
 So let's write that out:
 
 ```{.haskell:hs}
@@ -158,7 +158,7 @@ And then we state that taking `n` elements from a list equals a list that has `x
 Try using a piece of paper to write down how the evaluation would look like if we try to take, say, 3 from `[4,3,2,1]`.
 
 `reverse` simply reverses a list.
-Think about the edge condition.
+Think about the base case.
 What is it?
 Come on ... it's the empty list!
 An empty list reversed equals the empty list itself.
@@ -174,7 +174,7 @@ reverse' (x:xs) = reverse' xs ++ [x]
 
 There we go!
 
-Because Haskell supports infinite lists, our recursion doesn't really have to have an edge condition.
+Because Haskell supports infinite lists, our recursion doesn't really have to have a base case.
 But if it doesn't have it, it will either keep churning at something infinitely or produce an infinite data structure, like an infinite list.
 The good thing about infinite lists though is that we can cut them where we want.
 `repeat` takes an element and returns an infinite list that just has that element.
@@ -194,8 +194,8 @@ So essentially it's like doing `replicate 5 3`.
 `zip [1,2,3] [2,3]` returns `[(1,2),(2,3)]`, because it truncates the longer list to match the length of the shorter one.
 How about if we zip something with an empty list?
 Well, we get an empty list back then.
-So there's our edge condition.
-However, `zip` takes two lists as parameters, so there are actually two edge conditions.
+So there's our base case.
+However, `zip` takes two lists as parameters, so there are actually two base cases.
 
 ```{.haskell:hs}
 zip' :: [a] -> [b] -> [(a,b)]
@@ -207,11 +207,11 @@ zip' (x:xs) (y:ys) = (x,y):zip' xs ys
 First two patterns say that if the first list or second list is empty, we get an empty list.
 The third one says that two lists zipped are equal to pairing up their heads and then tacking on the zipped tails.
 Zipping `[1,2,3]` and `['a','b']` will eventually try to zip `[3]` with `[]`.
-The edge condition patterns kick in and so the result is `(1,'a'):(2,'b'):[]`, which is exactly the same as `[(1,'a'),(2,'b')]`.
+The base case patterns kick in and so the result is `(1,'a'):(2,'b'):[]`, which is exactly the same as `[(1,'a'),(2,'b')]`.
 
 Let's implement one more standard library function --- `elem`.
 It takes an element and a list and sees if that element is in the list.
-The edge condition, as is most of the times with lists, is the empty list.
+The base case, as is most of the times with lists, is the empty list.
 We know that an empty list contains no elements, so it certainly doesn't have the droids we're looking for.
 
 ```{.haskell:hs}
@@ -241,7 +241,7 @@ Therefore, let's implement it here, even though implementing quicksort in Haskel
 
 So, the type signature is going to be `quicksort :: (Ord a) => [a] -> [a]`.
 No surprises there.
-The edge condition?
+The base case?
 Empty list, as is expected.
 A sorted empty list is an empty list.
 Now here comes the main algorithm: **a sorted list is a list that has all the values smaller than (or equal to) the head of the list in front (and those values are sorted), then comes the head of the list in the middle and then come all the values that are bigger than the head (they're also sorted).**
@@ -294,7 +294,7 @@ The yellowish gradient thing represents an application of quicksort.
 ## Thinking recursively {#thinking-recursively}
 
 We did quite a bit of recursion so far and as you've probably noticed, there's a pattern here.
-Usually you define an edge case and then you define a function that does something between some element and the function applied to the rest.
+Usually you define a base case and then you define a function that does something between some element and the function applied to the rest.
 It doesn't matter if it's a list, a tree or any other data structure.
 A sum is the first element of a list plus the sum of the rest of the list.
 A product of a list is the first element of the list times the product of the rest of the list.
@@ -303,19 +303,19 @@ Et cetera, et cetera...
 
 ![brain](assets/images/recursion/brain.png){.left width=250 height=219}
 
-Of course, these also have edge cases.
-Usually the edge case is some scenario where a recursive application doesn't make sense.
-When dealing with lists, the edge case is most often the empty list.
-If you're dealing with trees, the edge case is usually a node that doesn't have any children.
+Of course, these also have base cases.
+Usually the base case is some scenario where a recursive application doesn't make sense.
+When dealing with lists, the base case is most often the empty list.
+If you're dealing with trees, the base case is usually a node that doesn't have any children.
 
 It's similar when you're dealing with numbers recursively.
 Usually it has to do with some number and the function applied to that number modified.
 We did the factorial function earlier and it's the product of a number and the factorial of that number minus one.
 Such a recursive application doesn't make sense with zero, because factorials are defined only for positive integers.
-Often the edge case value turns out to be an identity.
+Often the base case value turns out to be an identity.
 The identity for multiplication is 1 because if you multiply something by 1, you get that something back.
 Also when doing sums of lists, we define the sum of an empty list as 0 and 0 is the identity for addition.
-In quicksort, the edge case is the empty list and the identity is also the empty list, because if you add an empty list to a list, you just get the original list back.
+In quicksort, the base case is the empty list and the identity is also the empty list, because if you add an empty list to a list, you just get the original list back.
 
-So when trying to think of a recursive way to solve a problem, try to think of when a recursive solution doesn't apply and see if you can use that as an edge case, think about identities and think about whether you'll break apart the parameters of the function (for instance, lists are usually broken into a head and a tail via pattern matching) and on which part you'll use the recursive call.
+So when trying to think of a recursive way to solve a problem, try to think of when a recursive solution doesn't apply and see if you can use that as a base case, think about identities and think about whether you'll break apart the parameters of the function (for instance, lists are usually broken into a head and a tail via pattern matching) and on which part you'll use the recursive call.
 

@@ -973,7 +973,7 @@ sequenceA (x:xs) = (:) <$> x <*> sequenceA xs
 Ah, recursion!
 First, we look at the type.
 It will transform a list of applicatives into an applicative with a list.
-From that, we can lay some groundwork for an edge condition.
+From that, we can lay some groundwork for a base case.
 If we want to turn an empty list into an applicative with a list of results, well, we just put an empty list in a default context.
 Now comes the recursion.
 If we have a list with a head and a tail (remember, `x` is an applicative and `xs` is a list of them), we call `sequenceA` on the tail, which results in an applicative with a list.
@@ -1075,13 +1075,13 @@ ghci> [[x,y,z] | x <- [1,2], y <- [3,4], z <- [5,6]]
 
 This might be a bit hard to grasp, but if you play with it for a while, you'll see how it works.
 Let's say that we're doing `sequenceA [[1,2],[3,4]]`.
-To see how this happens, let's use the `sequenceA (x:xs) = (:) <$> x <*> sequenceA xs` definition of `sequenceA` and the edge condition `sequenceA [] = pure []`.
+To see how this happens, let's use the `sequenceA (x:xs) = (:) <$> x <*> sequenceA xs` definition of `sequenceA` and the base case `sequenceA [] = pure []`.
 You don't have to follow this evaluation, but it might help you if have trouble imagining how `sequenceA` works on lists of lists, because it can be a bit mind-bending.
 
 * We start off with `sequenceA [[1,2],[3,4]]`
 * That evaluates to `(:) <$> [1,2] <*> sequenceA [[3,4]]`
 * Evaluating the inner `sequenceA` further, we get `(:) <$> [1,2] <*> ((:) <$> [3,4] <*> sequenceA [])`
-* We've reached the edge condition, so this is now `(:) <$> [1,2] <*> ((:) <$> [3,4] <*> [[]])`
+* We've reached the base case, so this is now `(:) <$> [1,2] <*> ((:) <$> [3,4] <*> [[]])`
 * Now, we evaluate the `(:) <$> [3,4] <*> [[]]` part, which will use `:` with every possible value in the left list (possible values are `3` and `4`) with every possible value on the right list (only possible value is `[]`), which results in `[3:[], 4:[]]`, which is `[[3],[4]]`.
   So now we have `(:) <$> [1,2] <*> [[3],[4]]`
 * Now, `:` is used with every possible value from the left list (`1` and `2`) with every possible value in the right list (`[3]` and `[4]`), which results in `[1:[3], 1:[4], 2:[3], 2:[4]]`, which is `[[1,3],[1,4],[2,3],[2,4]`
