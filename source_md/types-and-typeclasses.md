@@ -214,7 +214,7 @@ The type of those two values must be a member of the `Eq` class (this was the cl
 
 The `Eq` typeclass provides an interface for testing for equality.
 Any type where it makes sense to test for equality between two values of that type should be a member of the `Eq` class.
-All standard Haskell types except for IO (the type for dealing with input and output) and functions are a part of the `Eq` typeclass.
+All standard Haskell types except for `IO` (the type for dealing with input and output) and functions are a part of the `Eq` typeclass.
 
 The `elem` function has a type of `(Eq a) => a -> [a] -> Bool` because it uses `==` over a list to check whether some value we're looking for is in it.
 

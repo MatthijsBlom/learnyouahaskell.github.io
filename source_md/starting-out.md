@@ -247,15 +247,15 @@ doubleSmallNumber x = if x <= 100
 
 ![this is you](assets/images/starting-out/baby.png){.left width=140 height=211}
 
-Right here we introduced Haskell's if statement.
-You're probably familiar with if statements from other languages.
-The difference between Haskell's if statement and if statements in imperative languages is that the else part is mandatory in Haskell.
+Right here we introduced Haskell's `if` statement.
+You're probably familiar with `if` statements from other languages.
+The difference between Haskell's `if` statement and `if` statements in imperative languages is that the `else` part is mandatory in Haskell.
 In imperative languages you can just skip a couple of steps if the condition isn't satisfied but in Haskell every expression and function must return something.
-We could have also written that if statement in one line but I find this way more readable.
-Another thing about the if statement in Haskell is that it is an *expression*.
+We could have also written that `if` statement in one line but I find this way more readable.
+Another thing about the `if` statement in Haskell is that it is an *expression*.
 An expression is basically a piece of code that returns a value.
 `5` is an expression because it returns 5, `4 + 8` is an expression, `x + y` is an expression because it returns the sum of `x` and `y`.
-Because the else is mandatory, an if statement will always return something and that's why it's an expression.
+Because the `else` is mandatory, an `if` statement will always return something and that's why it's an expression.
 If we wanted to add one to every number that's produced in our previous function, we could have written its body like this.
 
 ```{.haskell:hs}

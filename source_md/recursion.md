@@ -27,7 +27,7 @@ If we hadn't defined $F(0)$ and $F(1)$ non recursively, you'd never get a soluti
 All of a sudden, you'd be saying that $F(-2000)$ is $F(-2001) + F(-2002)$ and there still wouldn't be an end in sight!
 
 Recursion is important to Haskell because unlike imperative languages, you do computations in Haskell by declaring what something *is* instead of declaring *how* you get it.
-That's why there are no while loops or for loops in Haskell and instead we many times have to use recursion to declare what something is.
+That's why there are no `while` loops or `for` loops in Haskell and instead we many times have to use recursion to declare what something is.
 
 ## Maximum awesome {#maximum-awesome}
 
@@ -56,7 +56,7 @@ maximum' (x:xs)
 ```
 
 As you can see, pattern matching goes great with recursion!
-Most imperative languages don't have pattern matching so you have to make a lot of if else statements to test for base cases.
+Most imperative languages don't have pattern matching so you have to make a lot of `if`--`else` statements to test for base cases.
 Here, we simply put them out as patterns.
 So the first base case says that if the list is empty, crash!
 Makes sense because what's the maximum of an empty list?

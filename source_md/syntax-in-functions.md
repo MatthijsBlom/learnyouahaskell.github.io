@@ -24,9 +24,9 @@ lucky x = "Sorry, you're out of luck, pal!"
 When you call `lucky`, the patterns will be checked from top to bottom and when it conforms to a pattern, the corresponding function body will be used.
 The only way a number can conform to the first pattern here is if it is 7.
 If it's not, it falls through to the second pattern, which matches anything and binds it to `x`.
-This function could have also been implemented by using an if statement.
+This function could have also been implemented by using an `if` statement.
 But what if we wanted a function that says the numbers from 1 to 5 and says `"Not between 1 and 5"` for any other number?
-Without pattern matching, we'd have to make a pretty convoluted if then else tree.
+Without pattern matching, we'd have to make a pretty convoluted `if`--`then`--`else` tree.
 However, with it:
 
 ```{.haskell:hs}
@@ -263,7 +263,7 @@ It would make sense to match stuff against `(xs ++ [x,y,z])` or just `(xs ++ [x]
 ![guards](assets/images/syntax-in-functions/guards.png){.left width=83 height=180}
 
 Whereas patterns are a way of making sure a value conforms to some form and deconstructing it, guards are a way of testing whether some property of a value (or several of them) are true or false.
-That sounds a lot like an if statement and it's very similar.
+That sounds a lot like an `if` statement and it's very similar.
 The thing is that guards are a lot more readable when you have several conditions and they play really nicely with patterns.
 
 Instead of explaining their syntax, let's just dive in and make a function using guards.
@@ -292,8 +292,8 @@ If we call this function with `24.3`, it will first check if that's smaller than
 Because it isn't, it falls through to the next guard.
 The check is carried out with the second guard and because `24.3` is less than `1000.0`, the second string is returned.
 
-This is very reminiscent of a big if else tree in imperative languages, only this is far better and more readable.
-While big if else trees are usually frowned upon, sometimes a problem is defined in such a discrete way that you can't get around them.
+This is very reminiscent of a big `if`--`else` tree in imperative languages, only this is far better and more readable.
+While big `if`--`else` trees are usually frowned upon, sometimes a problem is defined in such a discrete way that you can't get around them.
 Guards are a very nice alternative for this.
 
 Many times, the last guard is `otherwise`.
@@ -503,7 +503,7 @@ For now it just seems that `let` puts the bindings first and the expression that
 
 The difference is that `let` bindings are expressions themselves.
 `where` bindings are just syntactic constructs.
-Remember when we did the if statement and it was explained that an if else statement is an expression and you can cram it in almost anywhere?
+Remember when we did the `if` statement and it was explained that an `if`--`else` statement is an expression and you can cram it in almost anywhere?
 
 ```{.haskell:ghci}
 ghci> [if 5 > 3 then "Woo" else "Boo", if 'a' > 'b' then "Foo" else "Bar"]
@@ -590,11 +590,11 @@ Many imperative languages (C, C++, Java, etc.) have case syntax and if you've ev
 It's about taking a variable and then executing blocks of code for specific values of that variable and then maybe including a catch-all block of code in case the variable has some value for which we didn't set up a case.
 
 Haskell takes that concept and one-ups it.
-Like the name implies, case expressions are, well, expressions, much like if else expressions and `let` bindings.
+Like the name implies, `case` expressions are, well, expressions, much like `if`--`else` expressions and `let` bindings.
 Not only can we evaluate expressions based on the possible cases of the value of a variable, we can also do pattern matching.
 Hmmm, taking a variable, pattern matching it, evaluating pieces of code based on its value, where have we heard this before?
 Oh yeah, pattern matching on parameters in function definitions!
-Well, that's actually just syntactic sugar for case expressions.
+Well, that's actually just syntactic sugar for `case` expressions.
 These two pieces of code do the same thing and are interchangeable:
 
 ```{.haskell:hs}
@@ -609,7 +609,7 @@ head' xs = case xs of [] -> error "No head for empty lists!"
                       (x:_) -> x
 ```
 
-As you can see, the syntax for case expressions is pretty simple:
+As you can see, the syntax for `case` expressions is pretty simple:
 
 ```{.haskell:hs}
 case expression of pattern -> result
@@ -620,9 +620,9 @@ case expression of pattern -> result
 
 `expression` is matched against the patterns.
 The pattern matching action is the same as expected: the first pattern that matches the expression is used.
-If it falls through the whole case expression and no suitable pattern is found, a runtime error occurs.
+If it falls through the whole `case` expression and no suitable pattern is found, a runtime error occurs.
 
-Whereas pattern matching on function parameters can only be done when defining functions, case expressions can be used pretty much anywhere.
+Whereas pattern matching on function parameters can only be done when defining functions, `case` expressions can be used pretty much anywhere.
 For instance:
 
 ```{.haskell:hs}
@@ -633,7 +633,7 @@ describeList xs = "The list is " ++ case xs of [] -> "empty."
 ```
 
 They are useful for pattern matching against something in the middle of an expression.
-Because pattern matching in function definitions is syntactic sugar for case expressions, we could have also defined this like so:
+Because pattern matching in function definitions is syntactic sugar for `case` expressions, we could have also defined this like so:
 
 ```{.haskell:hs}
 describeList :: [a] -> String
