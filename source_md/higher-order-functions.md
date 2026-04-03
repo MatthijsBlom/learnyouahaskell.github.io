@@ -22,7 +22,7 @@ You'll understand it best on an example.
 Let's take our good friend, the `max` function.
 It looks like it takes two parameters and returns the one that's bigger.
 Doing `max 4 5` first creates a function that takes a parameter and returns either `4` or that parameter, depending on which is bigger.
-Then, `5` is applied to that function and that function produces our desired result.
+Then, `5` is passed to that function and that function produces our desired result.
 That sounds like a mouthful but it's actually a really cool concept.
 The following two calls are equivalent:
 
@@ -55,10 +55,10 @@ multThree x y z = x * y * z
 ```
 
 What really happens when we do `multThree 3 5 9` or `((multThree 3) 5) 9`?
-First, `3` is applied to `multThree`, because they're separated by a space.
+First, `3` is passed to `multThree`, because they're separated by a space.
 That creates a function that takes one parameter and returns a function.
-So then `5` is applied to that, which creates a function that will take a parameter and multiply it by 15.
-`9` is applied to that function and the result is 135 or something.
+So then that is applied to `5`, which creates a function that will take a parameter and multiply it by 15.
+`9` is passed to that function and the result is 135 or something.
 Remember that this function's type could also be written as `multThree :: (Num a) => a -> (a -> (a -> a))`.
 The thing before the `->` is the parameter that a function takes and the thing after it is what it returns.
 So our function takes an `a` and returns a function of type `(Num a) => a -> (a -> a)`.
@@ -173,7 +173,7 @@ So for simplicity's sake, we'll say that `a -> a -> a` takes two parameters, eve
 :::
 
 The body of the function is pretty simple.
-We just use the parameter `f` as a function, applying `x` to it by separating them with a space and then applying the result to `f` again.
+We just use the parameter `f` as a function, applying it to `x` by separating them with a space and then passing the result to `f` again.
 Anyway, playing around with the function:
 
 ```{.haskell:hs}
@@ -470,8 +470,8 @@ If we wanted to return a more general `Num a`, we could have used `fromIntegral`
 
 Using `map`, we can also do stuff like `map (*) [0..]`, if not for any other reason than to illustrate how currying works and how (partially applied) functions are real values that you can pass around to other functions or put into lists (you just can't turn them to strings).
 So far, we've only mapped functions that take one parameter over lists, like `map (*2) [0..]` to get a list of type `(Num a) => [a]`, but we can also do `map (*) [0..]` without a problem.
-What happens here is that the number in the list is applied to the function `*`, which has a type of `(Num a) => a -> a -> a`.
-Applying only one parameter to a function that takes two parameters returns a function that takes one parameter.
+What happens here is that the number in the list is passed to the function `*`, which has a type of `(Num a) => a -> a -> a`.
+Passing only one parameter to a function that takes two parameters returns a function that takes one parameter.
 If we map `*` over the list `[0..]`, we get back a list of functions that only take one parameter, so `(Num a) => [a -> a]`.
 `map (*) [0..]` produces a list like the one we'd get by writing `[(0*),(1*),(2*),(3*),(4*),(5*)..`.
 
@@ -482,7 +482,7 @@ ghci> (listOfFuncs !! 4) 5
 ```
 
 Getting the element with the index `4` from our list returns a function that's equivalent to `(4*)`.
-And then, we just apply `5` to that function.
+And then, we just pass `5` to that function.
 So that's like writing `(4*) 5` or just `4 * 5`.
 
 ## Lambdas {#lambdas}
@@ -845,7 +845,7 @@ That's all very well, but how does this help us?
 Most of the time, it's a convenience function so that we don't have to write so many parentheses.
 Consider the expression `sum (map sqrt [1..130])`.
 Because `$` has such a low precedence, we can rewrite that expression as `sum $ map sqrt [1..130]`, saving ourselves precious keystrokes!
-When a `$` is encountered, the expression on its right is applied as the parameter to the function on its left.
+When a `$` is encountered, the expression on its right is passed as the parameter to the function on its left.
 How about `sqrt 3 + 4 + 9`?
 This adds together 9, 4 and the square root of 3.
 If we want to get the square root of *3 + 4 + 9*, we'd have to write `sqrt (3 + 4 + 9)` or if we use `$` we can write it as `sqrt $ 3 + 4 + 9` because `$` has the lowest precedence of any operator.
@@ -923,7 +923,7 @@ Well, if we want to use them in function composition, we usually have to partial
 What goes on in here is this: a function that takes what `max 6.7` takes and applies `replicate 5` to it is created.
 Then, a function that takes the result of that and does a sum of it is created.
 Finally, that function is called with `8.9`.
-But normally, you just read that as: apply `8.9` to `max 6.7`, then apply `replicate 5` to that and then apply `sum` to that.
+But normally, you just read that as: pass `8.9` to `max 6.7`, then apply `replicate 5` to that and then apply `sum` to that.
 If you want to rewrite an expression with a lot of parentheses by using function composition, you can start by putting the last parameter of the innermost function after a `$` and then just composing all the other function calls, writing them without their last parameter and putting dots between them.
 If you have `replicate 100 (product (map (*3) (zipWith max [1,2,3,4,5] [4,5,6,7,8])))`, you can write it as `replicate 100 . product . map (*3) . zipWith max [1,2,3,4,5] $ [4,5,6,7,8]`.
 If the expression ends with three parentheses, chances are that if you translate it into function composition, it'll have three composition operators.

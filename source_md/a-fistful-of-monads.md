@@ -58,7 +58,7 @@ ghci> (-) <$> [3,4] <*> [1,2,3]
 
 Ah, cool, so now that we treat them as applicative values, `Maybe a` values represent computations that might have failed, `[a]` values represent computations that have several results (non-deterministic computations), `IO a` values represent values that have side-effects, etc.
 
-Monads are a natural extension of applicative functors and with them we're concerned with this: if you have a value with a context, `m a`, how do you apply to it a function that takes a normal `a` and returns a value with a context?
+Monads are a natural extension of applicative functors and with them we're concerned with this: if you have a value with a context, `m a`, how do you pass it to a function that takes a normal `a` and returns a value with a context?
 That is, how do you apply a function of type `a -> m b` to a value of type `m a`?
 So essentially, we will want this function:
 
@@ -147,7 +147,7 @@ If we give it the number `100`, the result is `Just 101`.
 Very straightforward.
 Now here's the kicker: how do we feed a `Maybe` value to this function?
 If we think about how `Maybe` acts as an applicative functor, answering this is pretty easy.
-If we feed it a `Just` value, take what's inside the `Just` and apply the function to it.
+If we feed it a `Just` value, take what's inside the `Just` and pass it to the function.
 If give it a `Nothing`, hmm, well, then we're left with a function but `Nothing` to apply it to.
 In that case, let's just do what we did before and say that the result is `Nothing`.
 
@@ -265,7 +265,7 @@ We do what we did in the `Applicative` type class and wrap it in a `Just`.
 
 The `>>=` function is the same as our `applyMaybe`.
 When feeding the `Maybe a` to our function, we keep in mind the context and return a `Nothing` if the value on the left is `Nothing` because if there's no value then there's no way to apply our function to it.
-If it's a `Just` we take what's inside and apply `f` to it.
+If it's a `Just` we take what's inside and pass it to `f`.
 
 We can play around with `Maybe` as a monad:
 

@@ -199,7 +199,7 @@ We call that function with `1`.
 
 How does the box analogy hold here?
 Well, if you stretch it, it holds.
-When we use `fmap (+3)` over `Just 3`, it's easy to imagine the `Maybe` as a box that has some contents on which we apply the function `(+3)`.
+When we use `fmap (+3)` over `Just 3`, it's easy to imagine the `Maybe` as a box that has some contents to which we apply the function `(+3)`.
 But what about when we're doing `fmap (*3) (+100)`?
 Well, you can think of the function `(+100)` as a box that contains its eventual result.
 Sort of like how an I/O action can be thought of as a box that will go out into the real world and fetch some result.
@@ -457,7 +457,7 @@ fmap (\x y z -> x + y / z) [3,4,5,6] :: (Fractional a) => [a -> a -> a]
 ```
 
 If we map `compare`, which has a type of `(Ord a) => a -> a -> Ordering` over a list of characters, we get a list of functions of type `Char -> Ordering`, because the function `compare` gets partially applied with the characters in the list.
-It's not a list of `(Ord a) => a -> Ordering` function, because the first `a` that got applied was a `Char` and so the second `a` has to decide to be of type `Char`.
+It's not a list of `(Ord a) => a -> Ordering` function, because the first `a` that got passed was a `Char` and so the second `a` has to decide to be of type `Char`.
 
 We see how by mapping "multi-parameter" functions over functors, we get functors that contain functions inside them.
 So now what can we do with them?
@@ -584,7 +584,7 @@ So at first, we have `pure (+)`, which is `Just (+)`.
 Next, `Just (+) <*> Just 3` happens.
 The result of this is `Just (3+)`.
 This is because of partial application.
-Only applying `3` to the `+` function results in a function that takes one parameter and adds 3 to it.
+Only passing `3` to the `+` function results in a function that takes one parameter and adds 3 to it.
 Finally, `Just (3+) <*> Just 5` is carried out, which results in a `Just 8`.
 
 Isn't this awesome?!
@@ -840,7 +840,7 @@ ghci> (+) <$> (+3) <*> (*100) $ 5
 Calling `<*>` with two applicative functors results in an applicative functor, so if we use it on two functions, we get back a function.
 So what goes on here?
 When we do `(+) <$> (+3) <*> (*100)`, we're making a function that will use `+` on the results of `(+3)` and `(*100)` and return that.
-To demonstrate on a real example, when we did `(+) <$> (+3) <*> (*100) $ 5`, the `5` first got applied to `(+3)` and `(*100)`, resulting in `8` and `500`.
+To demonstrate on a real example, when we did `(+) <$> (+3) <*> (*100) $ 5`, the `5` first got passed to `(+3)` and `(*100)`, resulting in `8` and `500`.
 Then, `+` gets called with `8` and `500`, resulting in `508`.
 
 ```{.haskell:hs}
@@ -1018,7 +1018,7 @@ If one of the values was `Nothing`, then the result is also a `Nothing`.
 This is cool when you have a list of `Maybe` values and you're interested in the values only if none of them is a `Nothing`.
 
 When used with functions, `sequenceA` takes a list of functions and returns a function that returns a list.
-In our example, we made a function that took a number as a parameter and applied it to each function in the list and then returned a list of results.
+In our example, we made a function that took a number as a parameter and passed it to each function in the list and then returned a list of results.
 `sequenceA [(+3),(+2),(+1)] 3` will call `(+3)` with `3`, `(+2)` with `3` and `(+1)` with `3` and present all those results as a list.
 
 Doing `(+) <$> (+3) <*> (*2)` will create a function that takes a parameter, feeds it to both `(+3)` and `(*2)` and then calls `+` with those two results.

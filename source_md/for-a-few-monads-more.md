@@ -5,7 +5,7 @@ title: "For a Few Monads More"
 
 ![there are two kinds of people in the world, my friend. those who learn them a haskell and those who have the job of coding java](assets/images/for-a-few-monads-more/clint.png){.right width=189 height=400}
 
-We've seen how monads can be used to take values with contexts and apply them to functions and how using `>>=` or `do` notation allows us to focus on the values themselves while the context gets handled for us.
+We've seen how monads can be used to take values with contexts and pass them to functions and how using `>>=` or `do` notation allows us to focus on the values themselves while the context gets handled for us.
 
 We've met the `Maybe` monad and seen how it adds a context of possible failure to values.
 We've learned about the list monad and saw how it lets us easily introduce non-determinism into our programs.
@@ -674,7 +674,7 @@ The implementation for `>>=` seems a bit cryptic, but it's really not all that.
 When we use `>>=` to feed a monadic value to a function, the result is always a monadic value.
 So in this case, when we feed a function to another function, the result is a function as well.
 That's why the result starts off as a lambda.
-All of the implementations of `>>=` so far always somehow isolated the result from the monadic value and then applied the function `f` to that result.
+All of the implementations of `>>=` so far always somehow isolated the result from the monadic value and then passed that result to the function `f`.
 The same thing happens here.
 To get the result from a function, we have to apply it to something, which is why we do `(h w)` here to get the result from the function and then we apply `f` to that.
 `f` returns a monadic value, which is a function in our case, so we apply it to `w` as well.

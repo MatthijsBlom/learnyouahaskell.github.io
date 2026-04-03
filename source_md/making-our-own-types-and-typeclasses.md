@@ -837,7 +837,7 @@ Now, a function that gets the value by a key in an association list can have a t
 **Fonzie says:** Aaay!
 When I talk about *concrete types* I mean like fully applied types like `Map Int String` or if we're dealin' with one of them polymorphic functions, `[a]` or `(Ord a) => Maybe a` and stuff.
 And like, sometimes me and my buddies say that `Maybe` is a type, but we don't mean that, cause every idiot knows `Maybe` is a type constructor.
-When I apply an extra type to `Maybe`, like `Maybe String`, then I have a concrete type.
+When I pass an extra type to `Maybe`, like `Maybe String`, then I have a concrete type.
 You know, values can only have types that are concrete types!
 So in conclusion, live fast, love hard and don't let anybody else use your comb!
 :::
@@ -1646,7 +1646,7 @@ If it's an empty value of `Nothing`, then just return a `Nothing`.
 If we map over an empty box, we get an empty box.
 It makes sense.
 Just like if we map over an empty list, we get back an empty list.
-If it's not an empty value, but rather a single value packed up in a `Just`, then we apply the function on the contents of the `Just`.
+If it's not an empty value, but rather a single value packed up in a `Just`, then we apply the function to the contents of the `Just`.
 
 ```{.haskell:hs}
 ghci> fmap (++ " HEY GUYS IM INSIDE THE JUST") (Just "Something serious.")
@@ -1742,7 +1742,7 @@ Type constructors take other types as parameters to eventually produce concrete 
 That kind of reminds me of functions, which take values as parameters to produce values.
 We've seen that type constructors can be partially applied (`Either String` is a type that takes one type and produces a concrete type, like `Either String Int`), just like functions can.
 This is all very interesting indeed.
-In this section, we'll take a look at formally defining how types are applied to type constructors, just like we took a look at formally defining how values are applied to functions by using type declarations.
+In this section, we'll take a look at formally defining how types are passed to type constructors, just like we took a look at formally defining how values are passed to functions by using type declarations.
 **You don't really have to read this section to continue on your magical Haskell quest** and if you don't understand it, don't worry about it.
 However, getting this will give you a very thorough understanding of the type system.
 
@@ -1777,7 +1777,7 @@ Maybe :: * -> *
 The `Maybe` type constructor takes one concrete type (like `Int`) and then returns a concrete type like `Maybe Int`.
 And that's what this kind tells us.
 Just like `Int -> Int` means that a function takes an `Int` and returns an `Int`, `* -> *` means that the type constructor takes one concrete type and returns a concrete type.
-Let's apply the type parameter to `Maybe` and see what the kind of that type is.
+Let's pass the type parameter to `Maybe` and see what the kind of that type is.
 
 ```{.haskell:hs}
 ghci> :k Maybe Int
@@ -1785,7 +1785,7 @@ Maybe Int :: *
 ```
 
 Just like I expected!
-We applied the type parameter to `Maybe` and got back a concrete type (that's what `* -> *` means).
+We passed the type parameter to `Maybe` and got back a concrete type (that's what `* -> *` means).
 A parallel (although not equivalent, types and kinds are two different things) to this is if we do `:t isUpper` and `:t isUpper 'A'`.
 `isUpper` has a type of `Char -> Bool` and `isUpper 'A'` has a type of `Bool`, because its value is basically `True`.
 Both those types, however, have a kind of `*`.
@@ -1911,7 +1911,7 @@ Barry :: (* -> *) -> * -> * -> *
 
 Ah, we were right.
 How satisfying.
-Now, to make this type a part of `Functor` we have to partially apply the first two type parameters so that we're left with `* -> *`.
+Now, to make this type a part of `Functor` we have to fill the first two type parameters so that we're left with `* -> *`.
 That means that the start of the instance declaration will be: `instance Functor (Barry a b) where`.
 If we look at `fmap` as if it was made specifically for `Barry`, it would have a type of `fmap :: (a -> b) -> Barry c d a -> Barry c d b`, because we just replace the `Functor`'s `f` with `Barry c d`.
 The third type parameter from `Barry` will have to change and we see that it's conveniently in its own field.

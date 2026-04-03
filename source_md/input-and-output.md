@@ -1020,7 +1020,7 @@ withFile' path mode f = do
 
 We know the result will be an I/O action so we can just start off with a `do`.
 First we open the file and get a handle from it.
-Then, we apply `handle` to our function to get back the I/O action that does all the work.
+Then, we pass `handle` to our function to get back the I/O action that does all the work.
 We bind that action to `result`, close the handle and then do `return result`.
 By `return`ing the result encapsulated in the I/O action that we got from `f`, we make it so that our I/O action encapsulates the same result as the one we got from `f handle`.
 So if `f handle` returns an action that will read a number of lines from the standard input and write them to a file and have as its result encapsulated the number of lines it read, if we used that with `withFile'`, the resulting I/O action would also have as its result the number of lines read.
