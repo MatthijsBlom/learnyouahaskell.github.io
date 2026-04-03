@@ -84,7 +84,8 @@ And shorter programs are easier to maintain than longer ones and have fewer bugs
 
 Haskell was made by some **really smart folk** (with PhDs).
 Work on Haskell began in 1987 when a committee of researchers got together to design a kick-ass language.
-In 2003 the Haskell Report was published, which defines a stable version of the language.
+A series of Haskell Reports was published that defined the language, most recently in 2010.
+Since then standardization has stalled, and the language's evolution has *de facto* been defined by that of its most popular compiler, the Glasgow Haskell Compiler (GHC).
 
 ## What you need to dive in {#what-you-need}
 
