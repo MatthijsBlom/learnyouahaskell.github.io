@@ -7,7 +7,7 @@ title: "Recursion"
 
 ![SOVIET RUSSIA](assets/images/recursion/recursion.png){.left width=250 height=179}
 
-We mention recursion briefly in the previous chapter.
+We mentioned recursion briefly in the previous chapter.
 In this chapter, we'll take a closer look at recursion, why it's important to Haskell and how we can work out very concise and elegant solutions to problems by thinking recursively.
 
 If you still don't know what recursion is, read this sentence.
@@ -22,18 +22,18 @@ Then we say that for any other natural number, that Fibonacci number is the sum 
 So $F(n) = F(n-1) + F(n-2)$.
 That way, $F(3)$ is $F(2) + F(1)$, which is $(F(1) + F(0)) + F(1)$.
 Because we've now come down to only non-recursively defined Fibonacci numbers, we can safely say that $F(3)$ is $2$.
-Having an element or two in a recursion definition defined non-recursively (like $F(0)$ and $F(1)$ here) is also called the **base case** and is important if you want your recursive function to terminate.
-If we hadn't defined $F(0)$ and $F(1)$ non recursively, you'd never get a solution any number because you'd reach $0$ and then you'd go into negative numbers.
+Having an element or two in a recursive definition defined non-recursively (like $F(0)$ and $F(1)$ here) is also called the **base case** and is important if you want your recursive function to terminate.
+If we hadn't defined $F(0)$ and $F(1)$ non-recursively, you'd never get a solution any number because you'd reach $0$ and then you'd go into negative numbers.
 All of a sudden, you'd be saying that $F(-2000)$ is $F(-2001) + F(-2002)$ and there still wouldn't be an end in sight!
 
-Recursion is important to Haskell because unlike imperative languages, you do computations in Haskell by declaring what something *is* instead of declaring *how* you get it.
+Recursion is important to Haskell because unlike in imperative languages, you do computations in Haskell by declaring what something *is* instead of declaring *how* you get it.
 That's why there are no `while` loops or `for` loops in Haskell and instead we many times have to use recursion to declare what something is.
 
 ## Maximum awesome {#maximum-awesome}
 
 The `maximum` function takes a list of things that can be ordered (e.g. instances of the `Ord` typeclass) and returns the biggest of them.
 Think about how you'd implement that in an imperative fashion.
-You'd probably set up a variable to hold the maximum value so far and then you'd loop through the elements of a list and if an element is bigger than then the current maximum value, you'd replace it with that element.
+You'd probably set up a variable to hold the maximum value so far and then you'd loop through the elements of a list and if an element is bigger than the current maximum value, you'd replace it with that element.
 The maximum value that remains at the end is the result.
 Whew!
 That's quite a lot of words to describe such a simple algorithm!
@@ -57,15 +57,15 @@ maximum' (x:xs)
 
 As you can see, pattern matching goes great with recursion!
 Most imperative languages don't have pattern matching so you have to make a lot of `if`--`else` statements to test for base cases.
-Here, we simply put them out as patterns.
+Here, we simply write them out as patterns.
 So the first base case says that if the list is empty, crash!
 Makes sense because what's the maximum of an empty list?
 I don't know.
 The second pattern also lays out a base case.
-It says that if it's the singleton list, just give back the only element.
+It says that if it's a singleton list, just give back the only element.
 
 Now the third pattern is where the action happens.
-We use pattern matching to split a list into a head and a tail.
+We use pattern matching to split the list into a head and a tail.
 This is a very common idiom when doing recursion with lists, so get used to it.
 We use a `where` binding to define `maxTail` as the maximum of the rest of the list.
 Then we check if the head is greater than the maximum of the rest of the list.

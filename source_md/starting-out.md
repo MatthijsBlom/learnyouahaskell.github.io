@@ -655,7 +655,7 @@ ghci> [x*2 | x <- [1..10], x*2 >= 12]
 ```
 
 Cool, it works.
-How about if we wanted all numbers from 50 to 100 whose remainder when divided with the number 7 is 3?
+How about if we wanted all numbers from 50 to 100 whose remainder when divided by the number 7 is 3?
 Easy.
 
 ```{.haskell: .ghci}

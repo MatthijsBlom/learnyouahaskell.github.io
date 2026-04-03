@@ -9,7 +9,7 @@ title: "Types and Typeclasses"
 
 Previously we mentioned that Haskell has a static type system.
 The type of every expression is known at compile time, which leads to safer code.
-If you write a program where you try to divide a boolean type with some number, it won't even compile.
+If you write a program where you try to divide a boolean type by some number, it won't even compile.
 That's good because it's better to catch such errors at compile time instead of having your program crash.
 Everything in Haskell has a type, so the compiler can reason quite a lot about your program before compiling it.
 
@@ -72,7 +72,7 @@ removeNonUppercase st = [ c | c <- st, c `elem` ['A'..'Z']]
 That's because it takes one string as a parameter and returns another as a result.
 The `[Char]` type is synonymous with `String` so it's clearer if we write `removeNonUppercase :: String -> String`.
 We didn't have to give this function a type declaration because the compiler can infer by itself that it's a function from a string to a string but we did anyway.
-But how do we write out the type of a function that takes several parameters?
+But how do we write out the type of a function that has several parameters?
 Here's a simple function that takes three integers and adds them together:
 
 ```{.haskell:hs}
@@ -80,9 +80,9 @@ addThree :: Int -> Int -> Int -> Int
 addThree x y z = x + y + z
 ```
 
-The parameters are separated with `->` and there's no special distinction between the parameters and the return type.
+The parameter types are separated by `->` and there's no special distinction between the parameters and the return type.
 The return type is the last item in the declaration and the parameters are the first three.
-Later on we'll see why they're all just separated with `->` instead of having some more explicit distinction between the return types and the parameters like `Int, Int, Int -> Int` or something.
+Later on we'll see why they're all just separated by `->` instead of having some more explicit distinction between the return types and the parameters like in `Int, Int, Int -> Int` or something.
 
 If you want to give your function a type declaration but are unsure as to what it should be, you can always just write the function without it and then check it with `:t`.
 Functions are expressions too, so `:t` works on them without a problem.
@@ -161,10 +161,10 @@ What is this `a`?
 Is it a type?
 Remember that we previously stated that types are written in capital case, so it can't exactly be a type.
 Because it's not in capital case it's actually a **type variable**.
-That means that `a` can be of any type.
+That means that `a` can be any type.
 This is much like generics in other languages, only in Haskell it's much more powerful because it allows us to easily write very general functions if they don't use any specific behavior of the types in them.
 Functions that have type variables are called **polymorphic functions**.
-The type declaration of `head` states that it takes a list of any type and returns one element of that type.
+The type signature of `head` states that it takes a list of any type and returns one element of that type.
 
 Although type variables can have names longer than one character, we usually give them names of a, b, c, d ...
 
@@ -203,7 +203,7 @@ ghci> :t (==)
 **Note**: the equality operator, `==` is a function.
 So are `+`, `*`, `-`, `/` and pretty much all operators.
 If a function name is comprised only of special characters, it's considered an infix function by default.
-If we want to examine its type, pass it to another function or call it as a prefix function, we have to surround it in parentheses.
+If we want to examine its type, pass it to another function, or call it as a prefix function, we have to wrap it in parentheses.
 :::
 
 Interesting.
@@ -248,7 +248,7 @@ ghci> :t (>)
 All the types we covered so far except for functions are part of `Ord`.
 `Ord` covers all the standard comparing functions such as `>`, `<`, `>=` and `<=`.
 The `compare` function takes two `Ord` members of the same type and returns an ordering.
-`Ordering`{.label .type} is a type that can be `GT`, `LT` or `EQ`, meaning *greater than*, *lesser than* and *equal*, respectively.
+`Ordering`{.label .type} is a type that can be `GT`, `LT` or `EQ`, meaning *greater than*, *less than* and *equal*, respectively.
 
 To be a member of `Ord`, a type must first have membership in the prestigious and exclusive `Eq` club.
 

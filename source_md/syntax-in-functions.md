@@ -39,7 +39,7 @@ sayMe 5 = "Five!"
 sayMe x = "Not between 1 and 5"
 ```
 
-Note that if we moved the last pattern (the catch-all one) to the top, it would always say `"Not between 1 and 5"`, because it would catch all the numbers and they wouldn't have a chance to fall through and be checked for any other patterns.
+Note that if we moved the last pattern (the catch-all one) to the top, it would always say `"Not between 1 and 5"`, because it would match all the numbers and they wouldn't have a chance to fall through and be checked against any other patterns.
 
 Remember the factorial function we implemented previously?
 We defined the factorial of a number `n` as `product [1..n]`.
@@ -192,7 +192,7 @@ This function is safe because it takes care of the empty list, a singleton list,
 Note that `(x:[])` and `(x:y:[])` could be rewritten as `[x]` and `[x,y]` (because its syntactic sugar, we don't need the parentheses).
 We can't rewrite `(x:y:_)` with square brackets because it matches any list of length 2 or more.
 
-We already implemented our own `length` function using list comprehension.
+We already implemented our own `length` function using a list comprehension.
 Now we'll do it by using pattern matching and a little recursion:
 
 ```{.haskell:hs}
@@ -237,7 +237,7 @@ There's also a thing called *as patterns*.
 Those are a handy way of breaking something up according to a pattern and binding it to names whilst still keeping a reference to the whole thing.
 You do that by putting a name and an `@` in front of a pattern.
 For instance, the pattern `xs@(x:y:ys)`.
-This pattern will match exactly the same thing as `x:y:ys` but you can easily get the whole list via `xs` instead of repeating yourself by typing out `x:y:ys` in the function body again.
+This pattern will match exactly the same things as `x:y:ys` but you can easily get the whole list via `xs` instead of repeating yourself by typing out `x:y:ys` in the function body again.
 Here's a quick and dirty example:
 
 ```{.haskell:nogutter:nocontrols:hs}
@@ -496,7 +496,7 @@ cylinder r h =
 
 The form is `let <bindings> in <expression>`.
 The names that you define in the `let` part are accessible to the expression after the `in` part.
-As you can see, we could have also defined this with a `where` binding.
+As you can see, we could have also defined this with `where` bindings.
 Notice that the names are also aligned in a single column.
 So what's the difference between the two?
 For now it just seems that `let` puts the bindings first and the expression that uses them later whereas `where` is the other way around.
