@@ -235,7 +235,7 @@ ghci> zipWith' (zipWith' (*)) [[1,2,3],[3,5,6],[2,3,4]] [[3,2,2],[3,4,5],[5,4,3]
 ```
 
 As you can see, a single higher order function can be used in very versatile ways.
-Imperative programming usually uses stuff like for loops, while loops, setting something to a variable, checking its state, etc. to achieve some behavior and then wrap it around an interface, like a function.
+Imperative programming usually uses stuff like `for` loops, `while` loops, setting something to a variable, checking its state, etc. to achieve some behavior and then wrap it around an interface, like a function.
 Functional programming uses higher order functions to abstract away common patterns, like examining two lists in pairs and doing something with those pairs or getting a set of solutions and eliminating the ones you don't need.
 
 We'll implement another function that's already in the standard library, called `flip`.
@@ -649,7 +649,7 @@ It kind of makes sense that the right fold has the accumulator on the right, bec
 
 The accumulator value (and hence, the result) of a fold can be of any type.
 It can be a number, a boolean or even a new list.
-We'll be implementing the map function with a right fold.
+We'll be implementing the `map` function with a right fold.
 The accumulator will be a list, we'll be accumulating the mapped list element by element.
 From that, it's obvious that the starting element will be an empty list.
 

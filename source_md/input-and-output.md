@@ -2305,7 +2305,7 @@ main = do toTry `catch` handler1
 Here, `toTry` uses `handler1` as the handler and `thenTryThis` uses `handler2`.
 `launchRockets` isn't a parameter to `catch`, so whichever exceptions it might throw will likely crash our program, unless `launchRockets` uses `catch` internally to handle its own exceptions.
 Of course `toTry`, `thenTryThis` and `launchRockets` are I/O actions that have been glued together using `do` syntax and hypothetically defined somewhere else.
-This is kind of similar to *try-catch* blocks of other languages, where you can surround your whole program in a single *try-catch* or you can use a more fine-grained approach and use different ones in different parts of your code to control what kind of error handling happens where.
+This is kind of similar to `try`--`catch` blocks of other languages, where you can surround your whole program in a single `try`--`catch` or you can use a more fine-grained approach and use different ones in different parts of your code to control what kind of error handling happens where.
 
 Now you know how to deal with I/O exceptions!
 Throwing exceptions from pure code and dealing with them hasn't been covered here, mainly because, like we said, Haskell offers much better ways to indicate errors than reverting to I/O to catch them.
