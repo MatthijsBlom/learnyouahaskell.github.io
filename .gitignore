@@ -9,3 +9,8 @@ site
 
 # Nix
 result
+
+
+NOTES.md
+codebook.toml
+Sandbox.hs
