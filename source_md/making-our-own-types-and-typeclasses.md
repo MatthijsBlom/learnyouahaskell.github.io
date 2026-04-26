@@ -1753,7 +1753,7 @@ A kind is more or less the type of a type.
 This may sound a bit weird and confusing, but it's actually a really cool concept.
 
 What are kinds and what are they good for?
-Well, let's examine the kind of a type by using the `:k` command in GHCi.
+Well, let's examine the kind of a type by using the `:k` (or `:kind`) command in GHCi.
 
 ```{.haskell:hs}
 ghci> :k Int

@@ -24,7 +24,7 @@ It tells us in which category of things that expression fits.
 The expression `True` is a boolean, `"hello"` is a string, etc.
 
 Now we'll use GHCi to examine the types of some expressions.
-We'll do that by using the `:t` command which, followed by any valid expression, tells us its type.
+We'll do that by using the `:t` (or `:type`) command which, followed by any valid expression, tells us its type.
 Let's give it a whirl.
 
 ```{.haskell: .ghci}
