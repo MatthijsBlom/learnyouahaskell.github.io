@@ -457,7 +457,7 @@ fmap (\x y z -> x + y / z) [3,4,5,6] :: (Fractional a) => [a -> a -> a]
 ```
 
 If we map `compare`, which has a type of `(Ord a) => a -> a -> Ordering` over a list of characters, we get a list of functions of type `Char -> Ordering`, because the function `compare` gets partially applied with the characters in the list.
-It's not a list of `(Ord a) => a -> Ordering` function, because the first `a` that got passed was a `Char` and so the second `a` has to decide to be of type `Char`.
+It's not a list of `(Ord a) => a -> Ordering` functions, because the first `a` that got passed was a `Char` and so the second `a` has to decide to be of type `Char`.
 
 We see how by mapping "multi-parameter" functions over functors, we get functors that contain functions inside them.
 So now what can we do with them?
