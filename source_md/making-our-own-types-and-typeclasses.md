@@ -931,9 +931,9 @@ lockerLookup :: Int -> LockerMap -> Either String Code
 lockerLookup lockerNumber map =
     case Map.lookup lockerNumber map of
         Nothing -> Left $ "Locker number " ++ show lockerNumber ++ " doesn't exist!"
-        Just (state, code) -> if state /= Taken
-                                then Right code
-                                else Left $ "Locker " ++ show lockerNumber ++ " is already taken!"
+        Just (state, code) -> case state of
+            Taken -> Left $ "Locker " ++ show lockerNumber ++ " is already taken!"
+            Free -> Right code
 ```
 
 We do a normal lookup in the map.
