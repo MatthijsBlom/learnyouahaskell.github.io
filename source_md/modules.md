@@ -408,7 +408,7 @@ find :: (a -> Bool) -> [a] -> Maybe a
 
 Notice the type of `find`.
 Its result is `Maybe a`.
-That's kind of like having the type of `[a]`, only a value of the type `Maybe` can contain either no elements or one element, whereas a list can contain no elements, one element or several elements.
+That's kind of like having the type of `[a]`, only a value of the type `Maybe a` can contain either no elements or one element, whereas a list can contain no elements, one element or several elements.
 
 Remember when we were searching for the first time our stock went over $1000.
 We did `head (dropWhile (\(val,y,m,d) -> val < 1000) stock)`.
@@ -559,7 +559,7 @@ ghci> [1..7] `intersect` [5..10]
 ```
 
 `insert`{.label .function} takes an element and a list of elements that can be sorted and inserts it into the last position where it's still less than or equal to the next element.
-In other words, `insert` will start at the beginning of the list and then keep going until it finds an element that's equal to or greater than the element that we're inserting and it will insert it just before the element.
+In other words, `insert` will start at the beginning of the list and then keep going until it finds an element that's equal to or greater than the element that we're inserting and it will insert it just before that element.
 
 ```{.haskell:ghci}
 ghci> insert 4 [3,5,1,2,8,2]
@@ -743,7 +743,7 @@ ghci> filter (not . any isSpace) . groupBy ((==) `on` isSpace) $ "hey folks its 
 
 Ah.
 
-The `Data.Char` also exports a datatype that's kind of like `Ordering`.
+The `Data.Char` module also exports a datatype that's kind of like `Ordering`.
 The `Ordering` type can have a value of `LT`, `EQ` or `GT`.
 It's a sort of enumeration.
 It describes a few possible results that can arise from comparing two elements.
@@ -798,7 +798,7 @@ ghci> intToDigit 5
 '5'
 ```
 
-The `ord`{.label .function} and `chr` functions convert characters to their corresponding numbers and vice versa:
+The `ord`{.label .function} and `chr`{.label .function} functions convert characters to their corresponding numbers and vice versa:
 
 ```{.haskell:ghci}
 ghci> ord 'a'
@@ -960,7 +960,7 @@ fromList [(1,2),(3,2),(5,5)]
 ```
 
 If there are duplicate keys in the original association list, the duplicates are just discarded.
-This is the type signature of `fromList`
+This is the type signature of `fromList`:
 
 ```{.haskell:hs}
 Map.fromList :: (Ord k) => [(k, v)] -> Map.Map k v

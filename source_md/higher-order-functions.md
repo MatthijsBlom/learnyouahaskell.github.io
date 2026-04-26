@@ -165,7 +165,7 @@ The second parameter is something of that type also and the return value is also
 We could read this type declaration in the curried way, but to save ourselves a headache, we'll just say that this function takes two parameters and returns one thing.
 The first parameter is a function (of type `a -> a`) and the second is that same `a`.
 The function can also be `Int -> Int` or `String -> String` or whatever.
-But then, the second parameter to also has to be of that type.
+But then, the second parameter has to also be of that type.
 
 ::: {.hintbox}
 **Note:** From now on, we'll say that functions take several parameters despite each function actually taking only one parameter and returning partially applied functions until we reach a function that returns a solid value.
@@ -248,7 +248,7 @@ flip' f = g
     where g x y = f y x
 ```
 
-Reading the type declaration, we say that it takes a function that takes an `a` and a `b` and returns a function that takes a `b` and an `a`.
+Reading the type declaration, we see that it takes a function that takes an `a` and a `b` and returns a function that takes a `b` and an `a`.
 But because functions are curried by default, the second pair of parentheses is really unnecessary, because `->` is right associative by default.
 `(a -> b -> c) -> (b -> a -> c)` is the same as `(a -> b -> c) -> (b -> (a -> c))`, which is the same as `(a -> b -> c) -> b -> a -> c`.
 We wrote that `g x y = f y x`.
@@ -336,7 +336,7 @@ ghci> filter (`elem` ['A'..'Z']) "i Laugh At you Because u R All The Same"
 ```
 
 All of this could also be achieved with list comprehensions by the use of predicates.
-There's no set rule for when to use `map` and `filter` versus using list comprehension, you just have to decide what's more readable depending on the code and the context.
+There's no set rule for when to use `map` and `filter` versus using a list comprehension, you just have to decide what's more readable depending on the code and the context.
 The `filter` equivalent of applying several predicates in a list comprehension is either filtering something several times or joining the predicates with the logical `&&` function.
 
 Remember our quicksort function from the [previous chapter](recursion.html)?

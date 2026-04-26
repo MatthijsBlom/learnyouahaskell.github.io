@@ -119,8 +119,8 @@ Value constructors are functions, so we can map them and partially apply them an
 If we want a list of concentric circles with different radii, we can do this.
 
 ```{.haskell:hs}
-ghci> map (Circle 10 20) [4,5,6,6]
-[Circle 10.0 20.0 4.0,Circle 10.0 20.0 5.0,Circle 10.0 20.0 6.0,Circle 10.0 20.0 6.0]
+ghci> map (Circle 10 20) [4,5,6,7]
+[Circle 10.0 20.0 4.0,Circle 10.0 20.0 5.0,Circle 10.0 20.0 6.0,Circle 10.0 20.0 7.0]
 ```
 
 Our data type is good, although it could be better.
@@ -1871,7 +1871,8 @@ data Frank a b  = Frank {frankField :: b a} deriving (Show)
 How do we know this type has a kind of `k -> (k -> *) - > *`?
 Well, fields in ADTs are made to hold values, so they must be of kind `*`, obviously.
 We assume `k` for `a`, and `b` takes it as its argument so its kind is `k -> *`.
-Now we know the kinds of both `a` and `b` and because they're parameters for `Frank`, we see that `Frank` has a kind of `k -> (k -> *) -> *` The first `k` represents `a` and the `(k -> *)` represents `b`.
+Now we know the kinds of both `a` and `b` and because they're parameters for `Frank`, we see that `Frank` has a kind of `k -> (k -> *) -> *`.
+The first `k` represents `a` and the `(k -> *)` represents `b`.
 Let's make some `Frank` values and check out their types.
 
 ```{.haskell:hs}

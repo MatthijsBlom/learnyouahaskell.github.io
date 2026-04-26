@@ -1221,7 +1221,7 @@ So it's kind of like `fmap`, only the function itself is in a context.
 We have to somehow extract it from the context and map it over the `f a` value and then assemble the context back together.
 Because all functions are curried in Haskell by default, we can use the combination of `<$>` and `<*>` to apply functions that take several parameters between applicative values.
 
-Anyway, it turns out that just like `fmap`, `<*>` can also be implemented by using only what the `Monad` type class give us.
+Anyway, it turns out that just like `fmap`, `<*>` can also be implemented by using only what the `Monad` type class gives us.
 The `ap` function is basically `<*>`, only it has a `Monad` constraint instead of an `Applicative` one.
 Here's its definition:
 
