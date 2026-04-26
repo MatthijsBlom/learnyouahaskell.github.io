@@ -214,7 +214,7 @@ That way, someone importing our module could only make shapes by using the auxil
 `Data.Map` uses that approach.
 You can't create a map by doing `Map.Map [(1,2),(3,4)]` because it doesn't export that value constructor.
 However, you can make a mapping by using one of the auxiliary functions like `Map.fromList`.
-Remember, value constructors are just functions that take the fields as parameters and return a value of some type (like `Shape`) as a result.
+Remember, value constructors are just functions that take the fields as arguments and return a value of some type (like `Shape`) as a result.
 So when we choose not to export them, we just prevent the person importing our module from using those functions, but if some other functions that are exported return a type, we can use them to make values of our custom data types.
 
 Not exporting the value constructors of a data types makes them more abstract in such a way that we hide their implementation.
@@ -349,9 +349,9 @@ However, in our `Person` and `Car` types, it wasn't so obvious and we greatly be
 
 ## Type parameters {#type-parameters}
 
-A value constructor can take some values parameters and then produce a new value.
+A value constructor can take some values as arguments and then produce a new value.
 For instance, the `Car` constructor takes three values and produces a car value.
-In a similar manner, **type constructors** can take types as parameters to produce new types.
+In a similar manner, **type constructors** can take types as arguments to produce new types.
 This might sound a bit too meta at first, but it's not that complicated.
 If you're familiar with templates in C++, you'll see some parallels.
 To get a clear picture of what type parameters work like in action, let's take a look at how a type we've already met is implemented.
@@ -368,12 +368,12 @@ Depending on what we want this data type to hold when it's not `Nothing`, this t
 No value can have a type of just `Maybe`, because that's not a type per se, it's a type constructor.
 In order for this to be a real type that a value can be part of, it has to have all its type parameters filled up.
 
-So if we pass `Char` as the type parameter to `Maybe`, we get a type of `Maybe Char`.
+So if we pass `Char` as the type argument to `Maybe`, we get a type of `Maybe Char`.
 The value `Just 'a'` has a type of `Maybe Char`, for example.
 
 You might not know it, but we used a type that has a type parameter before we used `Maybe`.
 That type is the list type.
-Although there's some syntactic sugar in play, the list type takes a parameter to produce a concrete type.
+Although there's some syntactic sugar in play, the list type takes an argument to produce a concrete type.
 Values can have an `[Int]` type, a `[Char]` type, a `[[String]]` type, but you can't have a value that just has a type of `[]`.
 
 Let's play around with the `Maybe` type.
@@ -1660,7 +1660,7 @@ Nothing
 ```
 
 Another thing that can be mapped over and made an instance of `Functor` is our `Tree a` type.
-It can be thought of as a box in a way (holds several or no values) and the `Tree` type constructor takes exactly one type parameter.
+It can be thought of as a box in a way (holds several or no values) and the `Tree` type constructor takes exactly one type argument.
 If you look at `fmap` as if it were a function made only for `Tree`, its type signature would look like `(a -> b) -> Tree a -> Tree b`.
 We're going to use recursion on this one.
 Mapping over an empty tree will produce an empty tree.
@@ -1682,9 +1682,9 @@ Node 28 (Node 4 EmptyTree (Node 8 EmptyTree (Node 12 EmptyTree (Node 20 EmptyTre
 Nice!
 Now how about `Either a b`?
 Can this be made a functor?
-The `Functor` typeclass wants a type constructor that takes only one type parameter but `Either` takes two.
+The `Functor` typeclass wants a type constructor that takes only one type argument but `Either` takes two.
 Hmmm!
-I know, we'll partially apply `Either` by feeding it only one parameter so that it has one free parameter.
+I know, we'll partially apply `Either` by feeding it only one argument so that it has one free parameter.
 Here's how `Either a` is a functor in the standard libraries:
 
 ```{.haskell:hs}
@@ -1695,7 +1695,7 @@ instance Functor (Either a) where
 
 Well well, what did we do here?
 You can see how we made `Either a` an instance instead of just `Either`.
-That's because `Either a` is a type constructor that takes one parameter, whereas `Either` takes two.
+That's because `Either a` is a type constructor that takes one argument, whereas `Either` takes two.
 If `fmap` was specifically for `Either a`, the type signature would then be `(b -> c) -> Either a b -> Either a c` because that's the same as `(b -> c) -> (Either a) b -> (Either a) c`.
 In the implementation, we mapped in the case of a `Right` value constructor, but we didn't in the case of a `Left`.
 Why is that?
@@ -1729,7 +1729,7 @@ In one of the next chapters, we'll also take a look at some laws that apply for 
 **Just one more thing!**
 Functors should obey some laws so that they may have some properties that we can depend on and not think about too much.
 If we use `fmap (+1)` over the list `[1,2,3,4]`, we expect the result to be `[2,3,4,5]` and not its reverse, `[5,4,3,2]`.
-If we use `fmap (\a -> a)` (the identity function, which just returns its parameter) over some list, we expect to get back the same list as a result.
+If we use `fmap (\a -> a)` (the identity function, which just returns its argument) over some list, we expect to get back the same list as a result.
 For example, if we gave the wrong functor instance to our `Tree` type, using `fmap` over a tree where the left subtree of a node only has elements that are smaller than the node and the right subtree only has nodes that are larger than the node might produce a tree where that's not the case.
 We'll go over the functor laws in more detail in one of the next chapters.
 :::
@@ -1738,8 +1738,8 @@ We'll go over the functor laws in more detail in one of the next chapters.
 
 ![TYPE FOO MASTER](assets/images/making-our-own-types-and-typeclasses/typefoo.png){.right width=287 height=400}
 
-Type constructors take other types as parameters to eventually produce concrete types.
-That kind of reminds me of functions, which take values as parameters to produce values.
+Type constructors take other types as arguments to eventually produce concrete types.
+That kind of reminds me of functions, which take values as arguments to produce values.
 We've seen that type constructors can be partially applied (`Either String` is a type that takes one type and produces a concrete type, like `Either String Int`), just like functions can.
 This is all very interesting indeed.
 In this section, we'll take a look at formally defining how types are passed to type constructors, just like we took a look at formally defining how values are passed to functions by using type declarations.
@@ -1777,7 +1777,7 @@ Maybe :: * -> *
 The `Maybe` type constructor takes one concrete type (like `Int`) and then returns a concrete type like `Maybe Int`.
 And that's what this kind tells us.
 Just like `Int -> Int` means that a function takes an `Int` and returns an `Int`, `* -> *` means that the type constructor takes one concrete type and returns a concrete type.
-Let's pass the type parameter to `Maybe` and see what the kind of that type is.
+Let's pass the type argument to `Maybe` and see what the kind of that type is.
 
 ```{.haskell:hs}
 ghci> :k Maybe Int
@@ -1785,7 +1785,7 @@ Maybe Int :: *
 ```
 
 Just like I expected!
-We passed the type parameter to `Maybe` and got back a concrete type (that's what `* -> *` means).
+We passed the type argument to `Maybe` and got back a concrete type (that's what `* -> *` means).
 A parallel (although not equivalent, types and kinds are two different things) to this is if we do `:t isUpper` and `:t isUpper 'A'`.
 `isUpper` has a type of `Char -> Bool` and `isUpper 'A'` has a type of `Bool`, because its value is basically `True`.
 Both those types, however, have a kind of `*`.
@@ -1800,7 +1800,7 @@ ghci> :k Either
 Either :: * -> * -> *
 ```
 
-Aha, this tells us that `Either` takes two concrete types as type parameters to produce a concrete type.
+Aha, this tells us that `Either` takes two concrete types as type arguments to produce a concrete type.
 It also looks kind of like a type declaration of a function that takes two values and returns something.
 Type constructors are curried (just like functions), so we can partially apply them.
 
@@ -1827,7 +1827,7 @@ We also see that, whereas `Maybe` and `Either` take concrete types as arguments,
 Instead of a concrete type, it takes something that *itself* takes a single concrete type as an argument.
 So it can take `Maybe`, which has kind `* -> *`, but it will not take `Char`, as its kind is merely `*`.
 
-When we wanted to make `Either` a part of the `Functor` typeclass, we had to partially apply it because `Functor` wants types that take only one parameter while `Either` takes two.
+When we wanted to make `Either` a part of the `Functor` typeclass, we had to partially apply it because `Functor` wants types that take only one argument while `Either` takes two.
 In other words, `Functor` wants types of kind `* -> *` and so we had to partially apply `Either` to get a type of kind `* -> *` instead of its original kind `* -> * -> *`.
 If we look at the definition of `Functor` again
 
@@ -1851,7 +1851,7 @@ class Tofu t where
 Man, that looks weird.
 How would we make a type that could be an instance of that strange typeclass?
 Well, let's look at what its kind would have to be.
-Because `j a` is used as the type of a value that the `tofu` function takes as its parameter, `j a` has to have a kind of `*`.
+Because `j a` is used as the type of a value that the `tofu` function takes as its argument, `j a` has to have a kind of `*`.
 It looks like the kind of `a` is probably `*`, but it's not certain, so let's just call it `k` for now.
 We can infer that `j` has to have a kind of `k -> *`.
 We see that `t` has to produce a concrete value too and that it takes two arguments.
@@ -1935,7 +1935,7 @@ How satisfying.
 Now, to make this type a part of `Functor` we have to fill the first two parameters so that we're left with `* -> *`.
 That means that the start of the instance declaration will be: `instance Functor (Barry … …) where`.
 If we look at `fmap` as if it was made specifically for `Barry`, it would have a type of `fmap :: (a -> b) -> Barry c d a -> Barry c d b`, because we just replace the `Functor`'s `f` with `Barry c d`.
-The third type parameter from `Barry` will have to change and we see that it's conveniently in its own field.
+The third type argument from `Barry` will have to change and we see that it's conveniently in its own field.
 
 ```{.haskell:hs}
 instance Functor (Barry c d) where
