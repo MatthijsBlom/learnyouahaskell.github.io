@@ -13,16 +13,16 @@ They're a really powerful way of solving problems and thinking about programs.
 
 ## Curried functions {#curried-functions}
 
-Every function in Haskell officially only takes one parameter.
+Every function in Haskell officially takes only one parameter.
 So how is it possible that we defined and used several functions that take more than one parameter so far?
 Well, it's a clever trick!
 All the functions that accepted *several parameters* so far have been **curried functions**.
 What does that mean?
-You'll understand it best on an example.
+You'll understand it best with an example.
 Let's take our good friend, the `max` function.
 It looks like it takes two parameters and returns the one that's bigger.
 Doing `max 4 5` first creates a function that takes a parameter and returns either `4` or that parameter, depending on which is bigger.
-Then, `5` is passed to that function and that function produces our desired result.
+Then, `5` is passed to that function and that produces our desired result.
 That sounds like a mouthful but it's actually a really cool concept.
 The following two calls are equivalent:
 
@@ -108,7 +108,7 @@ Make sure you really understand how curried functions and partial application wo
 :::
 
 Infix functions can also be partially applied by using sections.
-To section an infix function, simply surround it with parentheses and only supply a parameter on one side.
+To section an infix function, simply surround it with parentheses and supply a parameter on only one side.
 That creates a function that takes one parameter and then applies it to the side that's missing an operand.
 An insultingly trivial function:
 
@@ -190,7 +190,7 @@ ghci> applyTwice (3:) [1]
 ```
 
 The awesomeness and usefulness of partial application is evident.
-If our function requires us to pass it a function that takes only one parameter, we can just partially apply a function to the point where it takes only one parameter and then pass it.
+If our function requires us to pass it a function that takes only one parameter, we can just partially apply a function to the point where it takes only one more parameter and then pass it.
 
 Now we're going to use higher order programming to implement a really useful function that's in the standard library.
 It's called `zipWith`.
@@ -363,7 +363,7 @@ If that's the case, we would have printed it out to the screen or something.
 In functional programming, that pattern is achieved with mapping and filtering.
 You make a function that takes a value and produces some result.
 We map that function over a list of values and then we filter the resulting list out for the results that satisfy our search.
-Thanks to Haskell's laziness, even if you map something over a list several times and filter it several times, it will only pass over the list once.
+Thanks to Haskell's laziness, even if you map something over a list several times and filter it several times, it will pass over the list only once.
 
 Let's **find the largest number under 100,000 that's divisible by 3829**.
 To do that, we'll just filter a set of possibilities in which we know the solution lies.
@@ -493,7 +493,7 @@ Lambdas are basically anonymous functions that are used because we need some fun
 Normally, we make a lambda with the sole purpose of passing it to a higher-order function.
 To make a lambda, we write a `\` (because it kind of looks like the greek letter lambda if you squint hard enough) and then we write the parameters, separated by spaces.
 After that comes a `->` and then the function body.
-We usually surround them by parentheses, because otherwise they extend all the way to the right.
+We usually surround them with parentheses, because otherwise they extend all the way to the right.
 
 If you look about 5 inches up, you'll see that we used a `where` binding in our `numLongChains` function to make the `isLong` function for the sole purpose of passing it to `filter`.
 Well, instead of doing that, we can use a lambda:
@@ -521,14 +521,14 @@ ghci> zipWith (\a b -> (a * 30 + 3) / b) [5,4,3,2,1] [1,2,3,4,5]
 
 And like normal functions, you can pattern match in lambdas.
 The only difference is that you can't define several patterns for one parameter, like making a `[]` and a `(x:xs)` pattern for the same parameter and then having values fall through.
-If a pattern matching fails in a lambda, a runtime error occurs, so be careful when pattern matching in lambdas!
+If a pattern match fails in a lambda, a runtime error occurs, so be careful when pattern matching in lambdas!
 
 ```{.haskell:ghci}
 ghci> map (\(a,b) -> a + b) [(1,2),(3,5),(6,3),(2,6),(2,5)]
 [3,8,9,8,7]
 ```
 
-Lambdas are normally surrounded by parentheses unless we mean for them to extend all the way to the right.
+Lambdas are normally surrounded with parentheses unless we mean for them to extend all the way to the right.
 Here's something interesting: due to the way functions are curried by default, these two are equivalent:
 
 ```{.haskell:ghci}
@@ -637,7 +637,7 @@ We start off with `False`.
 It makes sense to use `False` as a starting value.
 We assume it isn't there.
 Also, if we call a fold on an empty list, the result will just be the starting value.
-Then we check the current element is the element we're looking for.
+Then we check whether the current element is the element we're looking for.
 If it is, we set the accumulator to `True`.
 If it's not, we just leave the accumulator unchanged.
 If it was `False` before, it stays that way because this current element is not it.

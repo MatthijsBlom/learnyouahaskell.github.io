@@ -172,7 +172,7 @@ ghci> head' "Hello"
 ```
 
 Nice!
-Notice that if you want to bind to several variables (even if one of them is just `_` and doesn't actually bind at all), we have to surround them in parentheses.
+Notice that if you want to bind to several variables (even if one of them is just `_` and doesn't actually bind at all), we have to enclose them in parentheses.
 Also notice the `error` function that we used.
 It takes a string and generates a runtime error, using that string as information about what kind of error occurred.
 It causes the program to crash, so it's not good to use it too much.

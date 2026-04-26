@@ -19,7 +19,7 @@ data Bool = False | True
 ```
 
 `data` means that we're defining a new data type.
-The part before the `=` denotes the type, which is `Bool`.
+The part before the `=` names the type, which is `Bool`.
 The parts after the `=` are **value constructors**.
 They specify the different values that this type can have.
 The `|` is read as *or*.
@@ -147,7 +147,7 @@ surface (Rectangle (Point x1 y1) (Point x2 y2)) = (abs $ x2 - x1) * (abs $ y2 - 
 
 The only thing we had to change were the patterns.
 We disregarded the whole point in the circle pattern.
-In the rectangle pattern, we just used a nested pattern matching to get the fields of the points.
+In the rectangle pattern, we just used a nested pattern to get the fields of the points.
 If we wanted to reference the points themselves for some reason, we could have used as-patterns.
 
 ```{.haskell:hs}
@@ -368,15 +368,15 @@ Depending on what we want this data type to hold when it's not `Nothing`, this t
 No value can have a type of just `Maybe`, because that's not a type per se, it's a type constructor.
 In order for this to be a real type that a value can be part of, it has to have all its type parameters filled up.
 
-So if we pass `Char` as the type argument to `Maybe`, we get a type of `Maybe Char`.
+So if we pass `Char` as the type argument to `Maybe`, we get the type `Maybe Char`.
 The value `Just 'a'` has a type of `Maybe Char`, for example.
 
 You might not know it, but we used a type that has a type parameter before we used `Maybe`.
 That type is the list type.
 Although there's some syntactic sugar in play, the list type takes an argument to produce a concrete type.
-Values can have an `[Int]` type, a `[Char]` type, a `[[String]]` type, but you can't have a value that just has a type of `[]`.
+Values can have a `[Int]` type, a `[Char]` type, a `[[String]]` type, but you can't have a value that just has a type of `[]`.
 
-Let's play around with the `Maybe` type.
+Let's play around with some `Maybe` types.
 
 ```{.haskell:hs}
 ghci> Just "Haha"
@@ -406,7 +406,7 @@ That's why we can do `[1,2,3] ++ []` and `["ha","ha","ha"] ++ []`.
 
 Using type parameters is very beneficial, but only when using them makes sense.
 Usually we use them when our data type would work regardless of the type of the value it then holds inside it, like with our `Maybe a` type.
-If our type acts as some kind of box, it's good to use them.
+If our type acts as some kind of container, it's good to use them.
 We could change our `Car` data type from this:
 
 ```{.haskell:hs}
@@ -675,8 +675,8 @@ ghci> True < False
 False
 ```
 
-In the `Maybe a` data type, the `Nothing` value constructor is specified before the `Just` value constructor, so a value of `Nothing` is always smaller than a value of `Just something`, even if that something is minus one billion trillion.
-But if we compare two `Just` values, then it goes to compare what's inside them.
+In the `Maybe a` data type, the `Nothing` value constructor is specified before the `Just` value constructor, so a `Nothing` value is always smaller than a `Just something` value, even if that something is minus one billion trillion.
+But if we compare two `Just` values, then it goes on to compare what's inside them.
 
 ```{.haskell:hs}
 ghci> Nothing < Just 100
@@ -882,7 +882,7 @@ data Either a b = Left a | Right b deriving (Eq, Ord, Read, Show)
 
 It has two value constructors.
 If the `Left` is used, then its contents are of type `a` and if `Right` is used, then its contents are of type `b`.
-So we can use this type to encapsulate a value of one type or another and then when we get a value of type `Either a b`, we usually pattern match on both `Left` and `Right` and we different stuff based on which one of them it was.
+So we can use this type to encapsulate a value of one type or another and then when we get a value of type `Either a b`, we usually pattern match for both `Left` and `Right` and we do different stuff based on which one of them it was.
 
 ```{.haskell:hs}
 ghci> Right 20
@@ -1159,7 +1159,7 @@ If we're looking for an element in an empty tree, then it's certainly not there.
 Okay.
 Notice how this is the same as the base case when searching for elements in lists.
 If we're looking for an element in an empty list, it's not there.
-Anyway, if we're not looking for an element in an empty tree, then we check some things.
+Otherwise, if we're not looking for an element in an empty tree, then we check some things.
 If the element in the root node is what we're looking for, great!
 If it's not, what then?
 Well, we can take advantage of knowing that all the left elements are smaller than the root node.
@@ -1922,7 +1922,7 @@ What is the kind of `Barry`?
 Well, we see it takes three arguments, so it's going to be `something -> something -> something -> *`.
 It's safe to say that `p` is a concrete type and thus has a kind of `*`.
 For `m`, we assume `k` and so by extension, `t` has a kind of `k -> *`.
-Now let's just replace those kinds with the *somethings* that we used as placeholders and we see it has a kind of `(k -> *) -> k -> * -> *`.
+Now let's just substitute those kinds for the *somethings* that we used as placeholders and we see it has a kind of `(k -> *) -> k -> * -> *`.
 Let's check that with GHCi.
 
 ```{.haskell:hs}
@@ -1935,7 +1935,7 @@ How satisfying.
 Now, to make this type a part of `Functor` we have to fill the first two parameters so that we're left with `* -> *`.
 That means that the start of the instance declaration will be: `instance Functor (Barry … …) where`.
 If we look at `fmap` as if it was made specifically for `Barry`, it would have a type of `fmap :: (a -> b) -> Barry c d a -> Barry c d b`, because we just replace the `Functor`'s `f` with `Barry c d`.
-The third type argument from `Barry` will have to change and we see that it's conveniently in its own field.
+The third type argument to `Barry` will have to change and we see that it's conveniently in its own field.
 
 ```{.haskell:hs}
 instance Functor (Barry c d) where

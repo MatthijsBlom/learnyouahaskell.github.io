@@ -41,7 +41,7 @@ The context might be that the computation can have a value or it might have fail
 
 If we want to make a type constructor an instance of `Functor`, it has to have a kind of `* -> *`, which means that it has to take exactly one concrete type as a type parameter.
 For example, `Maybe` can be made an instance because it takes one type parameter to produce a concrete type, like `Maybe Int` or `Maybe String`.
-If a type constructor takes two parameters, like `Either`, we have to partially apply the type constructor until it only takes one type parameter.
+If a type constructor takes two parameters, like `Either`, we have to partially apply the type constructor until it takes only one type parameter.
 So we can't write `instance Functor Either where`, but we can write `instance Functor (Either a) where` and then if we imagine that `fmap` is only for `Either a`, it would have a type declaration of `fmap :: (b -> c) -> Either a b -> Either a c`.
 As you can see, the `Either a` part is fixed, because `Either a` takes only one type parameter, whereas just `Either` takes two so `fmap :: (b -> c) -> Either b -> Either c` wouldn't really make sense.
 
@@ -457,7 +457,7 @@ fmap (\x y z -> x + y / z) [3,4,5,6] :: (Fractional a) => [a -> a -> a]
 ```
 
 If we map `compare`, which has a type of `(Ord a) => a -> a -> Ordering` over a list of characters, we get a list of functions of type `Char -> Ordering`, because the function `compare` gets partially applied with the characters in the list.
-It's not a list of `(Ord a) => a -> Ordering` functions, because the first `a` that got passed was a `Char` and so the second `a` has to decide to be of type `Char`.
+It's not a list of `(Ord a) => a -> Ordering` functions, because the first `a` that got passed was a `Char` and so the second `a` must also be of type `Char`.
 
 We see how by mapping "multi-parameter" functions over functors, we get functors that contain functions inside them.
 So now what can we do with them?

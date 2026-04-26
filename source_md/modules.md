@@ -24,7 +24,7 @@ The syntax for importing modules in a Haskell script is `import <module name>`.
 This must be done before defining any functions, so imports are usually done at the top of the file.
 One script can, of course, import several modules.
 Just put each import statement into a separate line.
-Let's import the `Data.List` module, which has a bunch of useful functions for working with lists and use a function that it exports to create a function that tells us how many unique elements a list has.
+Let's import the `Data.List` module, which has a bunch of useful functions for working with lists, and use a function that it exports to create a function that tells us how many unique elements a list has.
 
 ```{.haskell:hs}
 import Data.List
@@ -166,7 +166,7 @@ ghci> concat [[3,4,5],[2,3,4],[2,1,1]]
 It will just remove one level of nesting.
 So if you want to completely flatten `[[[2,3],[3,4,5],[2]],[[2,3],[3,4]]]`, which is a list of lists of lists, you have to concatenate it twice.
 
-Doing `concatMap`{.label .function} is the same as first mapping a function to a list and then concatenating the list with `concat`.
+Doing `concatMap`{.label .function} is the same as first mapping a function over a list and then concatenating the list with `concat`.
 
 ```{.haskell:ghci}
 ghci> concatMap (replicate 4) [1..3]
@@ -243,7 +243,7 @@ ghci> takeWhile (/=' ') "This is a sentence"
 
 Say we wanted to know the sum of all third powers that are under 10,000.
 We can't map `(^3)` to `[1..]`, apply a filter and then try to sum that up because filtering an infinite list never finishes.
-You may know that all the elements here are ascending but Haskell doesn't.
+You may know that all the elements here are increasing but Haskell doesn't.
 That's why we can do this:
 
 ```{.haskell:ghci}
@@ -408,7 +408,7 @@ find :: (a -> Bool) -> [a] -> Maybe a
 
 Notice the type of `find`.
 Its result is `Maybe a`.
-That's kind of like having the type of `[a]`, only a value of the type `Maybe a` can contain either no elements or one element, whereas a list can contain no elements, one element or several elements.
+That's kind of like having the type of `[a]`, only a value of the type `Maybe a` can contain either no elements or one element, whereas a list can contain no elements, one element, or several elements.
 
 Remember when we were searching for the first time our stock went over $1000.
 We did `head (dropWhile (\(val,y,m,d) -> val < 1000) stock)`.
@@ -421,7 +421,7 @@ But if there was a valid answer in that list, we'd get, say, `Just (1001.4,2008,
 
 `elemIndex`{.label .function} is kind of like `elem`, only it doesn't return a boolean value.
 It maybe returns the index of the element we're looking for.
-If that element isn't in our list, it returns a `Nothing`.
+If that element isn't in our list, it returns `Nothing`.
 
 ```{.haskell:ghci}
 ghci> :t elemIndex
@@ -433,7 +433,7 @@ Nothing
 ```
 
 `elemIndices`{.label .function} is like `elemIndex`, only it returns a list of indices, in case the element we're looking for crops up in our list several times.
-Because we're using a list to represent the indices, we don't need a `Maybe` type, because failure can be represented as the empty list, which is very much synonymous to `Nothing`.
+Because we're using a list to represent the indices, we don't need a `Maybe` type, because failure can be represented as the empty list, which is very much analogous to `Nothing`.
 
 ```{.haskell:ghci}
 ghci> ' ' `elemIndices` "Where are the spaces?"
@@ -1181,7 +1181,7 @@ fromList " !Tabcdefghilmnorstuvwy"
 ```
 
 As you can see, the items are ordered and each element is unique.
-Now let's use the `intersection`{.label .function} function to see which elements they both share.
+Now let's use the `intersection`{.label .function} function to see which elements they share.
 
 ```{.haskell:ghci}
 ghci> Set.intersection set1 set2
@@ -1270,7 +1270,7 @@ Almost every programming language enables you to split your code up into several
 When making programs, it's good practice to take functions and types that work towards a similar purpose and put them in a module.
 That way, you can easily reuse those functions in other programs by just importing your module.
 
-Let's see how we can make our own modules by making a little module that provides some functions for calculating the volume and area of a few geometrical objects.
+Let's see how we can make our own modules by making a little module that provides some functions for calculating the volume and area of a few geometric objects.
 We'll start by creating a file called `Geometry.hs`.
 
 We say that a module *exports* functions.
