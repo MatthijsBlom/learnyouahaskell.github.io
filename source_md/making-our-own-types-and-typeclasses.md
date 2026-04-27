@@ -1183,13 +1183,22 @@ We're going to start with the empty tree and then approach a list from the right
 
 ```{.haskell:hs}
 ghci> let nums = [8,6,4,1,7,3,5]
-ghci> let numsTree = foldr treeInsert EmptyTree nums
-ghci> numsTree
-Node 5 (Node 3 (Node 1 EmptyTree EmptyTree) (Node 4 EmptyTree EmptyTree)) (Node 7 (Node 6 EmptyTree EmptyTree) (Node 8 EmptyTree EmptyTree))
+ghci> let numsTree = foldl' (flip treeInsert) EmptyTree nums
 ```
 
-In that `foldr`, `treeInsert` was the folding function (it takes a tree and a list element and produces a new tree) and `EmptyTree` was the starting accumulator.
+In that `foldl'`, `flip treeInsert` was the folding function (it takes a tree and a list element and produces a new tree) and `EmptyTree` was the starting accumulator.
 `nums`, of course, was the list we were folding over.
+
+::: {.hintbox}
+We use a strict (left) fold because `treeInsert` is strict (i.e. not lazy) in its second argument.
+This means that if `treeInsert x someTree` is to be evaluated, then `someTree` is guaranteed to be evaluated as well.
+Postponing a guaranteed evaluation doesn't really buy us anything, but it does take up more memory and time.
+:::
+
+```{.haskell:hs}
+ghci> numsTree
+Node 8 (Node 6 (Node 4 (Node 1 EmptyTree (Node 3 EmptyTree EmptyTree)) (Node 5 EmptyTree EmptyTree)) (Node 7 EmptyTree EmptyTree)) EmptyTree
+```
 
 When we print our tree to the console, it's not very readable, but if we try, we can make out its structure.
 We see that the root node is 5 and then it has two subtrees, one of which has the root node of 3 and the other a 7, etc.
