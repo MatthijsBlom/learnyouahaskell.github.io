@@ -141,8 +141,10 @@ It can have only two values: `True` and `False`.
 It's denoted by single quotes.
 A list of characters is a string.
 
-Tuples are types but they are dependent on their length as well as the types of their components, so there is theoretically an infinite number of tuple types, which is too many to cover in this tutorial.
-Note that the empty tuple `()`{.label .type} is also a type which can only have a single value: `()`
+The types of tuples depend on their lengths as well as the types of their components, so there is theoretically an infinite number of tuple types, which is too many to cover in this tutorial.
+Note that `()`{.label .type} is the type of empty tuples, which has only a single value: `()`.
+This type is often called the *unit type*, or just *unit* for short.
+Because it has only one value, you see.
 
 ## Type variables {#type-variables}
 

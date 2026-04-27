@@ -86,7 +86,11 @@ An I/O action is something that, when performed, will carry out an action with a
 Printing a string to the terminal doesn't really have any kind of meaningful return value, so a dummy value of `()` is used.
 
 ::: {.hintbox}
-The empty tuple is a value of `()` and it also has a type of `()`.
+The value `()` is the empty tuple, i.e. the tuple with zero elements.
+Its type has the same name.
+Only one empty tuple exists, so returning it conveys zero information.
+Returning `()` is the closest you can come, in Haskell, to returning nothing at all.
+In that regard Haskell's `()` type is like the `void` type in some imperative languages.
 :::
 
 So, when will an I/O action be performed?

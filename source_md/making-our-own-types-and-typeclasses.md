@@ -134,6 +134,14 @@ data Shape = Circle Point Float | Rectangle Point Point deriving (Show)
 
 Notice that when defining a point, we used the same name for the data type and the value constructor.
 This has no special meaning, although it's common to use the same name as the type if there's only one value constructor.
+
+::: {.hintbox}
+When a type constructor and a value constructor share a name they're still two separate things.
+One example you have already seen is `()`-the-type and its single member `()`-the-value.
+Types and values never mingle.
+That's why it's possible for some of them to share names: it is always clear from context whether a name refers to a type or to a value.
+:::
+
 So now the `Circle` has two fields, one is of type `Point` and the other of type `Float`.
 This makes it easier to understand what's what.
 Same goes for the rectangle.
