@@ -35,8 +35,8 @@ And sure enough, we're going to do the good old `"hello, world"` schtick.
 
 ::: {.hintbox}
 **Hey!**
-For the purposes of this chapter, I'm going to assume you're using a unix-y environment for learning Haskell.
-If you're on Windows, I'd suggest you download [Cygwin](https://www.cygwin.com/), which is a Linux-like environment for Windows, A.K.A. just what you need.
+For the purposes of this chapter, I'm going to assume you're using a Unix-y environment for learning Haskell.
+If you're on Windows, I'd suggest using [WSL](https://learn.microsoft.com/windows/wsl), which is a Linux-like environment right inside Windows, A.K.A. just what you need.
 :::
 
 So, for starters, punch in the following in your favorite text editor:
