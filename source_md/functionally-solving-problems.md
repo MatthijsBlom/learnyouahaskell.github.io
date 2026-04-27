@@ -44,10 +44,10 @@ Finally, there's a `-`.
 We pop `10` and `14` from the stack, subtract `14` from `10` and push that back.
 The number on the stack is now `-4` and because there are no more numbers or operators in our expression, that's our result!
 
-Now that we know how we'd calculate any RPN expression by hand, let's think about how we could make a Haskell function that takes as its parameter a string that contains an RPN expression, like `"10 4 3 + 2 * -"` and gives us back its result.
+Now that we know how we'd calculate any RPN expression by hand, let's think about how we could make a Haskell function that takes as its argument a string that contains an RPN expression, like `"10 4 3 + 2 * -"` and gives us back its result.
 
 What would the type of that function be?
-We want it to take a string as a parameter and produce a number as its result.
+We want it to take a string as an argument and produce a number as its result.
 So it will probably be something like `solveRPN :: (Num a) => String -> a`.
 
 ::: {.hintbox}
@@ -385,7 +385,7 @@ heathrowToLondon = [Section 50 10 30, Section 5 90 20, Section 40 2 25, Section 
 
 All we need to do now is to implement the solution that we came up with previously in Haskell.
 What should the type declaration for a function that calculates a shortest path for any given road system be?
-It should take a road system as a parameter and return a path.
+It should take a road system as an argument and return a path.
 We'll represent a path as a list as well.
 Let's introduce a `Label` type that's just an enumeration of either `A`, `B` or `C`.
 We'll also make a type synonym: `Path`.
@@ -463,7 +463,7 @@ We do the same thing for `newPathToB`, only everything's mirrored.
 Finally, we return `newPathToA` and `newPathToB` in a pair.
 
 Let's run this function on the first section of `heathrowToLondon`.
-Because it's the first section, the best paths on A and B parameter will be a pair of empty lists.
+Because it's the first section, the best paths on A and B argument will be a pair of empty lists.
 
 ```{.haskell:hs}
 ghci> roadStep ([], []) (head heathrowToLondon)
@@ -513,7 +513,7 @@ We have the function that finds an optimal path based on, now we just have to re
 
 First off, let's make a function that takes a list and splits it into groups of the same size.
 We'll call it `groupsOf`.
-For a parameter of `[1..10]`, `groupsOf 3` should return `[[1,2,3],[4,5,6],[7,8,9],[10]]`.
+For an argument of `[1..10]`, `groupsOf 3` should return `[[1,2,3],[4,5,6],[7,8,9],[10]]`.
 
 ```{.haskell:hs}
 groupsOf :: Int -> [a] -> [[a]]

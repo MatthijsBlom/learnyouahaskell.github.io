@@ -69,7 +69,7 @@ removeNonUppercase st = [ c | c <- st, c `elem` ['A'..'Z']]
 ```
 
 `removeNonUppercase` has a type of `[Char] -> [Char]`, meaning that it maps from a string to a string.
-That's because it takes one string as a parameter and returns another as a result.
+That's because it takes one string as an argument and returns another as a result.
 The `[Char]` type is synonymous with `String` so it's clearer if we write `removeNonUppercase :: String -> String`.
 We didn't have to give this function a type declaration because the compiler can infer by itself that it's a function from a string to a string but we did anyway.
 But how do we write out the type of a function that has several parameters?

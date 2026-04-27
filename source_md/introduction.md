@@ -48,7 +48,7 @@ If you say that `a` is 5, you can't say it's something else later because you ju
 What are you, some kind of liar?
 So in purely functional languages, a function has no side effects.
 The only thing a function can do is calculate something and return it as a result.
-At first, this seems kind of limiting but it actually has some very nice consequences: if a function is called twice with the same parameters, it's guaranteed to return the same result.
+At first, this seems kind of limiting but it actually has some very nice consequences: if a function is called twice with the same arguments, it's guaranteed to return the same result.
 That's called referential transparency and not only does it allow the compiler to reason about the program's behavior, but it also allows you to easily deduce (and even prove) that a function is correct and then build more complex functions by gluing simple functions together.
 
 ![lazy](assets/images/introduction/lazy.png){.right width=240 height=209}
@@ -76,7 +76,7 @@ Haskell uses a very good type system that has **type inference**.
 That means that you don't have to explicitly label every piece of code with a type because the type system can intelligently figure out a lot about it.
 If you say `a = 5 + 4`, you don't have to tell Haskell that `a` is a number, it can figure that out by itself.
 Type inference also allows your code to be more general.
-If a function you make takes two parameters and adds them together and you don't explicitly state their type, the function will work on any two parameters that act like numbers.
+If a function you make takes two arguments and adds them together and you don't explicitly state their type, the function will work on any two arguments that act like numbers.
 
 Haskell is **elegant and concise**.
 Because it uses a lot of high level concepts, Haskell programs are usually shorter than their imperative equivalents.

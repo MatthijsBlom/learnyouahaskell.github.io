@@ -8,8 +8,8 @@ title: "Input and Output"
 We've mentioned that Haskell is a purely functional language.
 Whereas in imperative languages you usually get things done by giving the computer a series of steps to execute, functional programming is more of defining what stuff is.
 In Haskell, a function can't change some state, like changing the contents of a variable (when a function changes state, we say that the function has *side-effects*).
-The only thing a function can do in Haskell is give us back some result based on the parameters we gave it.
-If a function is called twice with the same parameters, it has to return the same result.
+The only thing a function can do in Haskell is give us back some result based on the arguments we gave it.
+If a function is called twice with the same arguments, it has to return the same result.
 While this may seem a bit limiting when you're coming from an imperative world, we've seen that it's actually really cool.
 In an imperative language, you have no guarantee that a simple function that should just crunch some numbers won't burn down your house, kidnap your dog and scratch your car with a potato while crunching those numbers.
 For instance, when we were making a binary search tree, we didn't insert an element into a tree by modifying some tree in place.
@@ -45,7 +45,7 @@ So, for starters, punch in the following in your favorite text editor:
 main = putStrLn "hello, world"
 ```
 
-We just defined a name called `main` and in it we call a function called `putStrLn` with the parameter `"hello, world"`.
+We just defined a name called `main` and in it we call a function called `putStrLn` with the argument `"hello, world"`.
 Looks pretty much run-of-the-mill, but it isn't, as we'll see in just a few moments.
 Save that file as `helloworld.hs`.
 
@@ -144,7 +144,7 @@ And because I/O code is tainted too, any computation that depends on tainted I/O
 When I say *tainted*, I don't mean tainted in such a way that we can never use the result contained in an I/O action ever again in pure code.
 No, we temporarily *un-taint* the data inside an I/O action when we bind it to a name.
 When we do `name <- getLine`, `name` is just a normal string, because it represents what's inside the box.
-We can have a really complicated function that, say, takes your name (a normal string) as a parameter and tells you your fortune and your whole life's future based on your name.
+We can have a really complicated function that, say, takes your name (a normal string) as an argument and tells you your fortune and your whole life's future based on your name.
 We can do this:
 
 ```{.haskell:hs}
@@ -166,8 +166,8 @@ nameTag = "Hello, my name is " ++ getLine
 If you said no, go eat a cookie.
 If you said yes, drink a bowl of molten lava.
 Just kidding, don't!
-The reason that this doesn't work is that `++` requires both its parameters to be lists over the same type.
-The left parameter has a type of `String` (or `[Char]` if you will), whilst `getLine` has a type of `IO String`.
+The reason that this doesn't work is that `++` requires both its arguments to be lists over the same type.
+The left argument has a type of `String` (or `[Char]` if you will), whilst `getLine` has a type of `IO String`.
 You can't concatenate a string and an I/O action.
 We first have to get the result out of the I/O action to get a value of type `String` and the only way to do that is to say something like `name <- getLine` inside some other I/O action.
 If we want to deal with impure data, we have to do it in an impure environment.
@@ -362,7 +362,7 @@ Some people would prefer writing `then do return ()` in this case because the `e
 
 Before we move on to files, let's take a look at some functions that are useful when dealing with I/O.
 
-`putStr`{.label .function} is much like `putStrLn` in that it takes a string as a parameter and returns an I/O action that will print that string to the terminal, only `putStr` doesn't jump into a new line after printing out the string while `putStrLn` does.
+`putStr`{.label .function} is much like `putStrLn` in that it takes a string as an argument and returns an I/O action that will print that string to the terminal, only `putStr` doesn't jump into a new line after printing out the string while `putStrLn` does.
 
 ```{.haskell:hs}
 main = do   putStr "Hey, "
@@ -592,7 +592,7 @@ Notice that we do `return color` in the inside `do` block.
 We do that so that the I/O action which the `do` block defines has the result of our color contained within it.
 We actually didn't have to do that, because `getLine` already has that contained within it.
 Doing `color <- getLine` and then `return color` is just unpacking the result from `getLine` and then repackaging it again, so it's the same as just doing `getLine`.
-The `forM` (called with its two parameters) produces an I/O action, whose result we bind to `colors`.
+The `forM` (called with its two arguments) produces an I/O action, whose result we bind to `colors`.
 `colors` is just a normal list that holds strings.
 At the end, we print out all those colors by doing `mapM putStrLn colors`.
 
@@ -625,7 +625,7 @@ In the same vein, we could have replaced the last line with `forM colors putStrL
 In this section, we learned the basics of input and output.
 We also found out what I/O actions are, how they enable us to do input and output and when they are actually performed.
 To reiterate, I/O actions are values much like any other value in Haskell.
-We can pass them as parameters to functions and functions can return I/O actions as results.
+We can pass them as arguments to functions and functions can return I/O actions as results.
 What's special about them is that if they fall into the `main` function (or are the result in a GHCi line), they are performed.
 And that's when they get to write stuff on your screen or play Yakety Sax through your speakers.
 Each I/O action can also encapsulate a result with which it tells you what it got from the real world.
@@ -794,7 +794,7 @@ short
 We pipe the contents of *shortlines.txt* into *shortlinesonly*, and the output contains only the short lines.
 
 This pattern of getting some string from the input, transforming it with a function and then outputting that is so common that there exists a function which makes that even easier, called `interact`{.label .function}.
-`interact` takes a function of type `String -> String` as a parameter and returns an I/O action that will take some input, run that function on it and then print out the function's result.
+`interact` takes a function of type `String -> String` as an argument and returns an I/O action that will take some input, run that function on it and then print out the function's result.
 Let's modify our program to use that.
 
 ```{.haskell:hs}
@@ -1026,7 +1026,7 @@ By `return`ing the result encapsulated in the I/O action that we got from `f`, w
 So if `f handle` returns an action that will read a number of lines from the standard input and write them to a file and have as its result encapsulated the number of lines it read, if we used that with `withFile'`, the resulting I/O action would also have as its result the number of lines read.
 
 Just like we have `hGetContents` that works like `getContents` but for a specific file, there's also `hGetLine`{.label .function}, `hPutStr`{.label .function}, `hPutStrLn`{.label .function}, `hGetChar`{.label .function}, etc.
-They work just like their counterparts without the *h*, only they take a handle as a parameter and operate on that specific file instead of operating on standard input or standard output.
+They work just like their counterparts without the *h*, only they take a handle as an argument and operate on that specific file instead of operating on standard input or standard output.
 Example: `putStrLn` is a function that takes a string and returns an I/O action that will print out that string to the terminal and a newline after it.
 `hPutStrLn` takes a handle and a string and returns an I/O action that will write that string to the file associated with the handle and then put a newline after it.
 In the same vein, `hGetLine` takes a handle and returns an I/O action that reads a line from its file.
@@ -1219,7 +1219,7 @@ The old file is now unchanged and the temporary file contains all the lines that
 
 After that we close both the original and the temporary files and then we remove the original one with `removeFile`{.label .function}, which, as you can see, takes a path to a file and deletes it.
 After deleting the old *todo.txt*, we use `renameFile`{.label .function} to rename the temporary file to *todo.txt*.
-Be careful, `removeFile` and `renameFile` (which are both in `System.Directory` by the way) take file paths as their parameters, not handles.
+Be careful, `removeFile` and `renameFile` (which are both in `System.Directory` by the way) take file paths as their arguments, not handles.
 
 And that's that!
 We could have done this in even fewer lines, but we were very careful not to overwrite any existing files and politely asked the operating system to tell us where we can put our temporary file.
@@ -1326,7 +1326,7 @@ To view the tasks we'll just do `todo view todo.txt` and to remove the task with
 We'll start by making a dispatch association list.
 It's going to be a simple association list that has command line arguments as keys and functions as their corresponding values.
 All these functions will be of type `[String] -> IO ()`.
-They're going to take the argument list as a parameter and return an I/O action that does the viewing, adding, deleting, etc.
+They're going to take the argument list as an argument and return an I/O action that does the viewing, adding, deleting, etc.
 
 ```{.haskell:hs}
 import System.Environment
@@ -1512,7 +1512,7 @@ Each time you call that function, you get back a (hopefully) different random nu
 How about Haskell?
 Well, remember, Haskell is a pure functional language.
 What that means is that it has referential transparency.
-What THAT means is that a function, if given the same parameters twice, must produce the same result twice.
+What THAT means is that a function, if given the same arguments twice, must produce the same result twice.
 That's really cool because it allows us to reason differently about programs and it enables us to defer evaluation until we really need it.
 If I call a function, I can be sure that it won't do any funny stuff before giving me the results.
 All that matters are its results.
@@ -1531,7 +1531,7 @@ Well, they take various info from your computer, like the current time, how much
 The combination of those factors (that randomness) is probably different in any given moment in time, so you get a different random number.
 
 Ah.
-So in Haskell, we can make a random number then if we make a function that takes as its parameter that randomness and based on that returns some number (or other data type).
+So in Haskell, we can make a random number then if we make a function that takes as its argument that randomness and based on that returns some number (or other data type).
 
 Enter the `System.Random` module.
 It has all the functions that satisfy our need for randomness.
@@ -1589,8 +1589,8 @@ ghci> random (mkStdGen 100) :: (Int, StdGen)
 ```
 
 Of course.
-The same result for the same parameters.
-So let's try giving it a different random generator as a parameter.
+The same result for the same arguments.
+So let's try giving it a different random generator as an argument.
 
 ```{.haskell:hs}
 ghci> random (mkStdGen 949494) :: (Int, StdGen)
@@ -1610,7 +1610,7 @@ ghci> random (mkStdGen 949488) :: (Integer, StdGen)
 ```
 
 Let's make a function that simulates tossing a coin three times.
-If `random` didn't return a new generator along with a random value, we'd have to make this function take three random generators as a parameter and then return coin tosses for each of them.
+If `random` didn't return a new generator along with a random value, we'd have to make this function take three random generators as arguments and then return coin tosses for each of them.
 But that sounds wrong because if one generator can make a random value of type `Int` (which can take on a load of different values), it should be able to make three coin tosses (which can take on precisely eight combinations).
 So this is where `random` returning a new generator along with a value really comes in handy.
 
@@ -1626,7 +1626,7 @@ threeCoins gen =
     in  (firstCoin, secondCoin, thirdCoin)
 ```
 
-We call `random` with the generator we got as a parameter to get a coin and a new generator.
+We call `random` with the generator we got as an argument to get a coin and a new generator.
 Then we call it again, only this time with our new generator, to get the second coin.
 We do the same for the third coin.
 Had we called it with the same generator every time, all the coins would have had the same value and we'd only be able to get `(False, False, False)` or `(True, True, True)` as a result.
@@ -1693,7 +1693,7 @@ What if we want a random value in some sort of range?
 All the random integers so far were outrageously big or small.
 What if we want to throw a die?
 Well, we use `randomR`{.label .function} for that purpose.
-It has a type of `randomR :: (RandomGen g, Random a) :: (a, a) -> g -> (a, g)`, meaning that it's kind of like `random`, only it takes as its first parameter a pair of values that set the lower and upper bounds and the final value produced will be within those bounds.
+It has a type of `randomR :: (RandomGen g, Random a) :: (a, a) -> g -> (a, g)`, meaning that it's kind of like `random`, only it takes as its first argument a pair of values that set the lower and upper bounds and the final value produced will be within those bounds.
 
 ```{.haskell:hs}
 ghci> randomR (1,6) (mkStdGen 359353)
@@ -1812,7 +1812,7 @@ askForNumber gen = do
 ![jack of diamonds](assets/images/input-and-output/jackofdiamonds.png){.left width=313 height=280}
 
 We make a function `askForNumber`, which takes a random number generator and returns an I/O action that will prompt the user for a number and tell him if he guessed it right.
-In that function, we first generate a random number and a new generator based on the generator that we got as a parameter and call them `randNumber` and `newGen`.
+In that function, we first generate a random number and a new generator based on the generator that we got as an argument and call them `randNumber` and `newGen`.
 Let's say that the number generated was `7`.
 Then we tell the user to guess which number we're thinking of.
 We perform `getLine` and bind its result to `numberString`.
@@ -2074,7 +2074,7 @@ Pure code can throw exceptions, but they can only be caught in the I/O part of o
 That's because you don't know when (or if) anything will be evaluated in pure code, because it is lazy and doesn't have a well-defined order of execution, whereas I/O code does.
 
 Earlier, we talked about how we should spend as little time as possible in the I/O part of our program.
-The logic of our program should reside mostly within our pure functions, because their results are dependent only on the parameters that the functions are called with.
+The logic of our program should reside mostly within our pure functions, because their results are dependent only on the arguments that the functions are called with.
 When dealing with pure functions, you only have to think about what a function returns, because it can't do anything else.
 This makes your life easier.
 Even though doing some logic in I/O is necessary (like opening files and the like), it should preferably be kept to a minimum.
@@ -2139,12 +2139,12 @@ A file not existing is an exception that arises from I/O, so catching it in I/O 
 
 To deal with this by using exceptions, we're going to take advantage of the `catch`{.label .function} function from `System.IO.Error`.
 Its type is `catch :: IO a -> (IOError -> IO a) -> IO a`.
-It takes two parameters.
+It takes two arguments.
 The first one is an I/O action.
 For instance, it could be an I/O action that tries to open a file.
 The second one is the so-called handler.
 If the first I/O action passed to `catch` throws an I/O exception, that exception gets passed to the handler, which then decides what to do.
-So the final result is an I/O action that will either act the same as the first parameter or it will do what the handler tells it if the first I/O action throws an exception.
+So the final result is an I/O action that will either act the same as the first argument or it will do what the handler tells it if the first I/O action throws an exception.
 
 ![non sequitor](assets/images/input-and-output/puppy.png){.right width=334 height=240}
 
@@ -2176,7 +2176,7 @@ handler :: IOError -> IO ()
 handler e = putStrLn "Whoops, had some trouble!"
 ```
 
-First of all, you'll see that put backticks around it so that we can use it as an infix function, because it takes two parameters.
+First of all, you'll see that put backticks around it so that we can use it as an infix function, because it takes two arguments.
 Using it as an infix function makes it more readable.
 So ``toTry `catch` handler`` is the same as `catch toTry handler`, which fits well with its type.
 `toTry` is the I/O action that we try to carry out and `handler` is the function that takes an `IOError` and returns an action to be carried out in case of an exception.
@@ -2264,9 +2264,9 @@ Be sure to re-throw exceptions if they don't match any of your criteria, otherwi
 These start with `ioe` and you can see a [full list of them](https://hackage.haskell.org/package/base/docs/System-IO-Error.html#g:3) in the documentation.
 Say we want to print the filename that caused our error.
 We can't print the `fileName` that we got from `getArgs`, because only the `IOError` is passed to the handler and the handler doesn't know about anything else.
-A function depends only on the parameters it was called with.
+A function depends only on the arguments it was called with.
 That's why we can use the `ioeGetFileName`{.label .function} function, which has a type of `ioeGetFileName :: IOError -> Maybe FilePath`.
-It takes an `IOError` as a parameter and maybe returns a `FilePath` (which is just a type synonym for `String`, remember, so it's kind of the same thing).
+It takes an `IOError` as an argument and maybe returns a `FilePath` (which is just a type synonym for `String`, remember, so it's kind of the same thing).
 Basically, what it does is it extracts the file path from the `IOError`, if it can.
 Let's modify our program to print out the file path that's responsible for the exception occurring.
 
@@ -2303,7 +2303,7 @@ main = do toTry `catch` handler1
 ```
 
 Here, `toTry` uses `handler1` as the handler and `thenTryThis` uses `handler2`.
-`launchRockets` isn't a parameter to `catch`, so whichever exceptions it might throw will likely crash our program, unless `launchRockets` uses `catch` internally to handle its own exceptions.
+`launchRockets` isn't an argument to `catch`, so whichever exceptions it might throw will likely crash our program, unless `launchRockets` uses `catch` internally to handle its own exceptions.
 Of course `toTry`, `thenTryThis` and `launchRockets` are I/O actions that have been glued together using `do` syntax and hypothetically defined somewhere else.
 This is kind of similar to `try`--`catch` blocks of other languages, where you can wrap your whole program in a single `try`--`catch` or you can use a more fine-grained approach and use different ones in different parts of your code to control what kind of error handling happens where.
 

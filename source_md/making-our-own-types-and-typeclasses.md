@@ -398,7 +398,7 @@ When we do `:t Just "Haha"`, the type inference engine figures it out to be of t
 
 Notice that the type of `Nothing` is `Maybe a`.
 Its type is polymorphic.
-If some function requires a `Maybe Int` as a parameter, we can give it a `Nothing`, because a `Nothing` doesn't contain a value anyway and so it doesn't matter.
+If some function requires a `Maybe Int` as an argument, we can give it a `Nothing`, because a `Nothing` doesn't contain a value anyway and so it doesn't matter.
 The `Maybe a` type can act like a `Maybe Int` if it has to, just like `5` can act like an `Int` or a `Double`.
 Similarly, the type of the empty list is `[a]`.
 An empty list can act like a list of anything.
@@ -519,7 +519,7 @@ Notice that we didn't put a `Num` class constraint in the `data` declaration, be
 
 Once again, it's very important to distinguish between the type constructor and the value constructor.
 When declaring a data type, the part before the `=` is the type constructor and the constructors after it (possibly separated by `|`'s) are value constructors.
-Giving a function a type of `Vector t t t -> Vector t t t -> t` would be wrong, because we have to put types in type declaration and the vector **type** constructor takes only one parameter, whereas the value constructor takes three.
+Giving a function a type of `Vector t t t -> Vector t t t -> t` would be wrong, because we have to put types in type declaration and the vector **type** constructor takes only one argument, whereas the value constructor takes three.
 Let's play around with our vectors.
 
 ```{.haskell:hs}
@@ -698,7 +698,7 @@ Consider the following data type:
 data Day = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday
 ```
 
-Because all the value constructors are nullary (take no parameters, i.e. fields), we can make it part of the `Enum` typeclass.
+Because all the value constructors are nullary (take no arguments, i.e. fields), we can make it part of the `Enum` typeclass.
 The `Enum` typeclass is for things that have predecessors and successors.
 We can also make it part of the `Bounded` typeclass, which is for things that have the lowest possible value and highest possible value.
 And while we're at it, let's also make it an instance of all the other derivable typeclasses and see what we can do with it.
@@ -843,7 +843,7 @@ So in conclusion, live fast, love hard and don't let anybody else use your comb!
 :::
 
 Just like we can partially apply functions to get new functions, we can partially apply type parameters and get new type constructors from them.
-Just like we call a function with too few parameters to get back a new function, we can specify a type constructor with too few type parameters and get back a partially applied type constructor.
+Just like we call a function with too few arguments to get back a new function, we can specify a type constructor with too few type arguments and get back a partially applied type constructor.
 If we wanted a type that represents a map (from `Data.Map`) from integers to something, we could either do this:
 
 ```{.haskell:hs}
@@ -856,7 +856,7 @@ Or we could do it like this:
 type IntMap = Map Int
 ```
 
-Either way, the `IntMap` type constructor takes one parameter and that is the type of what the integers will point to.
+Either way, the `IntMap` type constructor takes one argument and that is the type of what the integers will point to.
 
 ::: {.hintbox}
 **Oh yeah**.
@@ -873,7 +873,7 @@ Type synonyms (and types generally) can only be used in the type portion of Hask
 We're in Haskell's type portion whenever we're defining new types (so in `data` and `type` declarations) or when we're located after a `::`.
 The `::` is in type declarations or in type annotations.
 
-Another cool data type that takes two types as its parameters is the `Either a b` type.
+Another cool data type that takes two types as its arguments is the `Either a b` type.
 This is roughly how it's defined:
 
 ```{.haskell:hs}
@@ -1361,7 +1361,7 @@ That's all there is to subclassing really, it's just a class constraint on a `cl
 When defining function bodies in the `class` declaration or when defining them in `instance` declarations, we can assume that `a` is a part of `Eq` and so we can use `==` on values of that type.
 
 But how are the `Maybe` or list types made as instances of typeclasses?
-What makes `Maybe` different from, say, `TrafficLight` is that `Maybe` in itself isn't a concrete type, it's a type constructor that takes one type parameter (like `Char` or something) to produce a concrete type (like `Maybe Char`).
+What makes `Maybe` different from, say, `TrafficLight` is that `Maybe` in itself isn't a concrete type, it's a type constructor that takes one type argument (like `Char` or something) to produce a concrete type (like `Maybe Char`).
 Let's take a look at the `Eq` typeclass again:
 
 ```{.haskell:hs}
@@ -1381,7 +1381,7 @@ instance Eq Maybe where
 ```
 
 Because like we've seen, the `a` has to be a concrete type but `Maybe` isn't a concrete type.
-It's a type constructor that takes one parameter and then produces a concrete type.
+It's a type constructor that takes one argument and then produces a concrete type.
 It would also be tedious to write `instance Eq (Maybe Int) where`, `instance Eq (Maybe Char) where`, etc. for every type ever.
 So we could write it out like so:
 
@@ -1417,7 +1417,7 @@ This is actually how Haskell would derive the instance too.
 Most of the times, class constraints in `class` declarations are used for making a typeclass a subclass of another typeclass and class constraints in `instance` declarations are used to express requirements about the contents of some type.
 For instance, here we required the contents of the `Maybe` to also be part of the `Eq` typeclass.
 
-When making instances, if you see that a type is used as a concrete type in the type declarations (like the `a` in `a -> a -> Bool`), you have to supply type parameters and add parentheses so that you end up with a concrete type.
+When making instances, if you see that a type is used as a concrete type in the type declarations (like the `a` in `a -> a -> Bool`), you have to supply type arguments and add parentheses so that you end up with a concrete type.
 
 ::: {.hintbox}
 Take into account that the type you're trying to make an instance of will replace the parameter in the `class` declaration.
@@ -1484,7 +1484,7 @@ instance YesNo Bool where
 
 Huh?
 What's `id`?
-It's just a standard library function that takes a parameter and returns the same thing, which is what we would be writing here anyway.
+It's just a standard library function that takes an argument and returns the same thing, which is what we would be writing here anyway.
 
 Let's make `Maybe a` an instance too.
 
@@ -1594,8 +1594,8 @@ Alright.
 We see that it defines one function, `fmap`, and doesn't provide any default implementation for it.
 The type of `fmap` is interesting.
 In the definitions of typeclasses so far, the type variable that played the role of the type in the typeclass was a concrete type, like the `a` in `(==) :: (Eq a) => a -> a -> Bool`.
-But now, the `f` is not a concrete type (a type that a value can hold, like `Int`, `Bool` or `Maybe String`), but a type constructor that takes one type parameter.
-A quick refresher example: `Maybe Int` is a concrete type, but `Maybe` is a type constructor that takes one type as the parameter.
+But now, the `f` is not a concrete type (a type that a value can hold, like `Int`, `Bool` or `Maybe String`), but a type constructor that takes one type argument.
+A quick refresher example: `Maybe Int` is a concrete type, but `Maybe` is a type constructor that takes one type as the argument.
 Anyway, we see that `fmap` takes a function from one type to another and a functor applied with one type and returns a functor applied with another type.
 
 If this sounds a bit confusing, don't worry.
@@ -1648,7 +1648,7 @@ instance Functor Maybe where
 Again, notice how we wrote `instance Functor Maybe where` instead of `instance Functor (Maybe m) where`, like we did when we were dealing with `Maybe` and `YesNo`.
 `Functor` wants a type constructor that takes one type and not a concrete type.
 If you mentally replace the `f`s with `Maybe`s, `fmap` acts like a `(a -> b) -> Maybe a -> Maybe b` for this particular type, which looks OK.
-But if you replace `f` with `(Maybe m)`, then it would seem to act like a `(a -> b) -> Maybe m a -> Maybe m b`, which doesn't make any damn sense because `Maybe` takes just one type parameter.
+But if you replace `f` with `(Maybe m)`, then it would seem to act like a `(a -> b) -> Maybe m a -> Maybe m b`, which doesn't make any damn sense because `Maybe` takes just one type argument.
 
 Anyway, the `fmap` implementation is pretty simple.
 If it's an empty value of `Nothing`, then just return a `Nothing`.
@@ -1716,7 +1716,7 @@ data Either a b = Left a | Right b
 
 Well, if we wanted to map one function over both of them, `a` and `b` would have to be the same type.
 I mean, if we tried to map a function that takes a string and returns a string and the `b` was a string but the `a` was a number, that wouldn't really work out.
-Also, from seeing what `fmap`'s type would be if it operated only on `Either` values, we see that the first parameter has to remain the same while the second one can change and the first parameter is actualized by the `Left` value constructor.
+Also, from seeing what `fmap`'s type would be if it operated only on `Either` values, we see that the first argument has to remain the same while the second one can change and the first argument is actualized by the `Left` value constructor.
 
 This also goes nicely with our box analogy if we think of the `Left` part as sort of an empty box with an error message written on the side telling us why it's empty.
 
@@ -1773,7 +1773,7 @@ A star?
 How quaint.
 What does that mean?
 A `*` means that the type is a concrete type.
-A concrete type is a type that doesn't take any type parameters and values can only have types that are concrete types.
+A concrete type is a type that doesn't take any type arguments and values can only have types that are concrete types.
 If I had to read `*` out loud (I haven't had to do that so far), I'd say *star* or just *type*.
 
 Okay, now let's see what the kind of `Maybe` is.
@@ -1880,7 +1880,7 @@ data Frank a b  = Frank {frankField :: b a} deriving (Show)
 How do we know this type has a kind of `k -> (k -> *) - > *`?
 Well, fields in ADTs are made to hold values, so they must be of kind `*`, obviously.
 We assume `k` for `a`, and `b` takes it as its argument so its kind is `k -> *`.
-Now we know the kinds of both `a` and `b` and because they're parameters for `Frank`, we see that `Frank` has a kind of `k -> (k -> *) -> *`.
+Now we know the kinds of both `a` and `b` and because they're arguments to `Frank`, we see that `Frank` has a kind of `k -> (k -> *) -> *`.
 The first `k` represents `a` and the `(k -> *)` represents `b`.
 Let's make some `Frank` values and check out their types.
 
