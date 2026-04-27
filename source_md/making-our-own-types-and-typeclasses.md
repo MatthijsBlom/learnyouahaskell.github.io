@@ -1041,20 +1041,18 @@ First off, we notice a new syntactic construct, the fixity declarations.
 When we define functions as operators, we can use that to give them a fixity (but we don't have to).
 A fixity states how tightly the operator binds and whether it's left-associative or right-associative.
 For instance, `*`'s fixity is `infixl 7 *` and `+`'s fixity is `infixl 6`.
-That means that they're both left-associative (`4 * 3 * 2` is `(4 * 3) * 2`) but `*` binds tighter than `+`, because it has a greater fixity, so `5 * 4 + 3` is `(5 * 4) + 3`.
+That means that they're both left-associative (`4 * 3 * 2` means `(4 * 3) * 2`) but `*` binds tighter than `+`, because it has a greater fixity, so `5 + 4 * 3` means `5 + (4 * 3)`.
 
 Otherwise, we just wrote `a :-: (List a)` instead of `Cons a (List a)`.
 Now, we can write out lists in our list type like so:
 
 ```{.haskell:hs}
 ghci> 3 :-: 4 :-: 5 :-: Empty
-(:-:) 3 ((:-:) 4 ((:-:) 5 Empty))
+3 :-: (4 :-: (5 :-: Empty))
 ghci> let a = 3 :-: 4 :-: 5 :-: Empty
 ghci> 100 :-: a
-(:-:) 100 ((:-:) 3 ((:-:) 4 ((:-:) 5 Empty)))
+100 :-: (3 :-: (4 :-: (5 :-: Empty)))
 ```
-
-When deriving `Show` for our type, Haskell will still display it as if the constructor was a prefix function, hence the parentheses around the operator (remember, `4 + 3` is `(+) 4 3`).
 
 Let's make a function that adds two of our lists together.
 This is how `++` is defined for normal lists:
@@ -1082,7 +1080,7 @@ And let's see if it works ...
 ghci> let a = 3 :-: 4 :-: 5 :-: Empty
 ghci> let b = 6 :-: 7 :-: Empty
 ghci> a .++ b
-(:-:) 3 ((:-:) 4 ((:-:) 5 ((:-:) 6 ((:-:) 7 Empty))))
+3 :-: (4 :-: (5 :-: (6 :-: (7 :-: Empty))))
 ```
 
 Nice.
