@@ -123,8 +123,8 @@ Let's take a look at them.
 
 ![phoen](assets/images/starting-out/ringring.png){.right width=160 height=161}
 Functions are usually prefix, so from now on we won't explicitly state that a function is of the prefix form, we'll just assume it.
-In most imperative languages, functions are called by writing the function name and then writing its parameters in parentheses, usually separated by commas.
-In Haskell, functions are called by writing the function name, a space and then the parameters, separated by spaces.
+In most imperative languages, functions are called by writing the function name and then writing its arguments in parentheses, usually separated by commas.
+In Haskell, functions are called by writing the function name, a space and then the arguments, separated by spaces.
 For a start, we'll try calling one of the most boring functions in Haskell.
 
 ```{.haskell: .ghci}
@@ -133,8 +133,8 @@ ghci> succ 8
 ```
 
 The `succ` function takes anything that has a defined successor and returns that successor.
-As you can see, we just separate the function name from the parameter with a space.
-Calling a function with several parameters is also simple.
+As you can see, we just separate the function name from the argument with a space.
+Calling a function with several arguments is also simple.
 The functions `min` and `max` take two things that can be put in an order (like integers!).
 `min` returns the one that's lesser and `max` returns the one that's greater.
 See for yourself:
@@ -146,7 +146,7 @@ ghci> max 100 101
 101
 ```
 
-Function application (calling a function by putting a space after it and then typing out the parameters) has the highest precedence of them all.
+Function application (calling a function by putting a space after it and then typing out the arguments) has the highest precedence of them all.
 What that means for us is that these two statements are equivalent.
 
 ```{.haskell: .ghci}
@@ -160,7 +160,7 @@ However, if we wanted to get the successor of the product of numbers 9 and 10, w
 So 100.
 We'd have to write `succ (9 * 10)` to get 91.
 
-If a function takes two parameters, we can also call it as an infix function by surrounding it with backticks.
+If a function takes two arguments, we can also call it as an infix function by surrounding it with backticks.
 For instance, the `div` function takes two integers and does integral division between them.
 Doing `div 92 10` results in a 9.
 But when we call it like that, there may be some confusion as to which number is doing the division and which one is being divided.
@@ -170,8 +170,8 @@ Lots of people who come from imperative languages tend to stick to the notion th
 For example, in C, you use parentheses to call functions like `foo()`, `bar(1)` or `baz(3, "haha")`.
 Like we said, spaces are used for function application in Haskell.
 So those functions in Haskell would be `foo`, `bar 1` and `baz 3 "haha"`.
-So if you see something like `bar (bar 3)`, it doesn't mean that `bar` is called with `bar` and `3` as parameters.
-It means that we first call the function `bar` with `3` as the parameter to get some number and then we call `bar` again with that number.
+So if you see something like `bar (bar 3)`, it doesn't mean that `bar` is called with `bar` and `3` as arguments.
+It means that we first call the function `bar` with `3` as the argument to get some number and then we call `bar` again with that number.
 In C, that would be something like `bar(bar(3))`.
 
 ## Baby's first functions {#babys-first-functions}
@@ -277,8 +277,8 @@ There are two noteworthy things here.
 The first is that in the function name we didn't capitalize Conan's name.
 That's because functions can't begin with uppercase letters.
 We'll see why a bit later.
-The second thing is that this function doesn't take any parameters.
-When a function doesn't take any parameters, we usually say it's a *definition* (or a *name*).
+The second thing is that this function doesn't take any arguments.
+When a function doesn't take any arguments, we usually say it's a *definition* (or a *name*).
 Because we can't change what names (and functions) mean once we've defined them, `conanO'Brien` and the string `"It's a-me, Conan O'Brien!"` can be used interchangeably.
 
 ## An intro to lists {#an-intro-to-lists}

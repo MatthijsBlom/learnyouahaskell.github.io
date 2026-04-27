@@ -39,11 +39,11 @@ A more correct term for what a functor is would be *computational context*.
 The context might be that the computation can have a value or it might have failed (`Maybe` and `Either a`) or that there might be more values (lists), stuff like that.
 :::
 
-If we want to make a type constructor an instance of `Functor`, it has to have a kind of `* -> *`, which means that it has to take exactly one concrete type as a type parameter.
-For example, `Maybe` can be made an instance because it takes one type parameter to produce a concrete type, like `Maybe Int` or `Maybe String`.
-If a type constructor takes two parameters, like `Either`, we have to partially apply the type constructor until it takes only one type parameter.
+If we want to make a type constructor an instance of `Functor`, it has to have a kind of `* -> *`, which means that it has to take exactly one concrete type as a type argument.
+For example, `Maybe` can be made an instance because it takes one type argument to produce a concrete type, like `Maybe Int` or `Maybe String`.
+If a type constructor takes two arguments, like `Either`, we have to partially apply the type constructor until it takes only one type argument.
 So we can't write `instance Functor Either where`, but we can write `instance Functor (Either a) where` and then if we imagine that `fmap` is only for `Either a`, it would have a type declaration of `fmap :: (b -> c) -> Either a b -> Either a c`.
-As you can see, the `Either a` part is fixed, because `Either a` takes only one type parameter, whereas just `Either` takes two so `fmap :: (b -> c) -> Either b -> Either c` wouldn't really make sense.
+As you can see, the `Either a` part is fixed, because `Either a` takes only one type argument, whereas just `Either` takes two so `fmap :: (b -> c) -> Either b -> Either c` wouldn't really make sense.
 
 We've learned by now how a lot of types (well, type constructors really) are instances of `Functor`, like `[]`, `Maybe`, `Either a` and a `Tree` type that we made on our own.
 We saw how we can map functions over them for great good.
@@ -127,8 +127,8 @@ It's like writing `(\xs -> intersperse '-' (reverse (map toUpper xs)))`, only pr
 Another instance of `Functor` that we've been dealing with all along but didn't know was a `Functor` is `(->) r`.
 You're probably slightly confused now, since what the heck does `(->) r` mean?
 The function type `r -> a` can be rewritten as `(->) r a`, much like we can write `2 + 3` as `(+) 2 3`.
-When we look at it as `(->) r a`, we can see `(->)` in a slightly different light, because we see that it's just a type constructor that takes two type parameters, just like `Either`.
-But remember, we said that a type constructor has to take exactly one type parameter so that it can be made an instance of `Functor`.
+When we look at it as `(->) r a`, we can see `(->)` in a slightly different light, because we see that it's just a type constructor that takes two type arguments, just like `Either`.
+But remember, we said that a type constructor has to take exactly one type argument so that it can be made an instance of `Functor`.
 That's why we can't make `(->)` an instance of `Functor`, but if we partially apply it to `(->) r`, it doesn't pose any problems.
 If the syntax allowed for type constructors to be partially applied with sections (like we can partially apply `+` by doing `(2+)`, which is the same as `(+) 2`), you could write `(->) r` as `(r ->)`.
 How are functions functors?
@@ -215,12 +215,12 @@ The function being mapped over a computation results in the same computation but
 Before we go on to the rules that `fmap` should follow, let's think about the type of `fmap` once more.
 Its type is `fmap :: (a -> b) -> f a -> f b`.
 We're missing the class constraint `(Functor f) =>`, but we left it out here for brevity, because we're talking about functors anyway so we know what the `f` stands for.
-When we first learned about [curried functions](higher-order-functions.html#curried-functions), we said that all Haskell functions actually take one parameter.
-A function `a -> b -> c` actually takes just one parameter of type `a` and then returns a function `b -> c`, which takes one parameter and returns a `c`.
-That's how if we call a function with too few parameters (i.e. partially apply it), we get back a function that takes the number of parameters that we left out (if we're thinking about functions as taking several parameters again).
+When we first learned about [curried functions](higher-order-functions.html#curried-functions), we said that all Haskell functions actually take one argument.
+A function `a -> b -> c` actually takes just one argument of type `a` and then returns a function `b -> c`, which takes one argument and returns a `c`.
+That's how if we call a function with too few arguments (i.e. partially apply it), we get back a function that takes the number of arguments that we left out (if we're thinking about functions as taking several arguments again).
 So `a -> b -> c` can be written as `a -> (b -> c)`, to make the currying more apparent.
 
-In the same vein, if we write `fmap :: (a -> b) -> (f a -> f b)`, we can think of `fmap` not as a function that takes one function and a functor and returns a functor, but as a function that takes a function and returns a new function that's just like the old one, only it takes a functor as a parameter and returns a functor as the result.
+In the same vein, if we write `fmap :: (a -> b) -> (f a -> f b)`, we can think of `fmap` not as a function that takes one function and a functor and returns a functor, but as a function that takes a function and returns a new function that's just like the old one, only it takes a functor as an argument and returns a functor as the result.
 It takes an `a -> b` function and returns a function `f a -> f b`.
 This is called *lifting* a function.
 Let's play around with that idea by using GHCi's `:t` command:
@@ -276,7 +276,7 @@ They aren't enforced by Haskell automatically, so you have to test them out your
 **The first functor law states that if we map the `id` function over a functor, the functor that we get back should be the same as the original functor.**
 If we write that a bit more formally, it means that `fmap id = id`{.label .law}.
 So essentially, this says that if we do `fmap id` over a functor, it should be the same as just calling `id` on the functor.
-Remember, `id` is the identity function, which just returns its parameter unmodified.
+Remember, `id` is the identity function, which just returns its argument unmodified.
 It can also be written as `\x -> x`.
 If we view the functor as something that can be mapped over, the `fmap id = id`{.label .law} law seems kind of trivial or obvious.
 
@@ -305,8 +305,8 @@ instance Functor Maybe where
     fmap f Nothing = Nothing
 ```
 
-We imagine that `id` plays the role of the `f` parameter in the implementation.
-We see that if we `fmap id` over `Just x`, the result will be `Just (id x)`, and because `id` just returns its parameter, we can deduce that `Just (id x)` equals `Just x`.
+We imagine that `id` plays the role of the `f` argument in the implementation.
+We see that if we `fmap id` over `Just x`, the result will be `Just (id x)`, and because `id` just returns its argument, we can deduce that `Just (id x)` equals `Just x`.
 So now we know that if we map `id` over a `Maybe` value with a `Just` value constructor, we get that same value back.
 
 Seeing that mapping `id` over a `Nothing` value returns the same value is trivial.
@@ -415,7 +415,7 @@ But even without the intuition, you can always just go over the implementation l
 We can also look at functors as things that output values in a context.
 For instance, `Just 3` outputs the value `3` in the context that it might or not output any values at all.
 `[1,2,3]` outputs three values---`1`, `2`, and `3`, the context is that there may be multiple values or no values.
-The function `(+3)` will output a value, depending on which parameter it is given.
+The function `(+3)` will output a value, depending on which argument it is given.
 
 If you think of functors as things that output values, you can think of mapping over functors as attaching a transformation to the output of the functor that changes the value.
 When we do `fmap (+3) [1,2,3]`, we attach the transformation `(+3)` to the output of `[1,2,3]`, so whenever we look at a number that the list outputs, `(+3)` will be applied to it.
@@ -431,13 +431,13 @@ This is what happens with composition.
 
 In this section, we'll take a look at applicative functors, which are beefed up functors, represented in Haskell by the `Applicative` typeclass, found in the `Control.Applicative` module.
 
-As you know, functions in Haskell are curried by default, which means that a function that seems to take several parameters actually takes just one parameter and returns a function that takes the next parameter and so on.
-If a function is of type `a -> b -> c`, we usually say that it takes two parameters and returns a `c`, but actually it takes an `a` and returns a function `b -> c`.
+As you know, functions in Haskell are curried by default, which means that a function that seems to take several arguments actually takes just one argument and returns a function that takes the next argument and so on.
+If a function is of type `a -> b -> c`, we usually say that it takes two arguments and returns a `c`, but actually it takes an `a` and returns a function `b -> c`.
 That's why we can call a function as `f x y` or as `(f x) y`.
-This mechanism is what enables us to partially apply functions by just calling them with too few parameters, which results in functions that we can then pass on to other functions.
+This mechanism is what enables us to partially apply functions by just calling them with too few arguments, which results in functions that we can then pass on to other functions.
 
-So far, when we were mapping functions over functors, we usually mapped functions that take only one parameter.
-But what happens when we map a function like `*`, which takes two parameters, over a functor?
+So far, when we were mapping functions over functors, we usually mapped functions that take only one argument.
+But what happens when we map a function like `*`, which takes two arguments, over a functor?
 Let's take a look at a couple of concrete examples of this.
 If we have `Just 3` and we do `fmap (*) (Just 3)`, what do we get?
 From the instance implementation of `Maybe` for `Functor`, we know that if it's a <code>Just *something*</code> value, it will apply the function to the <code>*something*</code> inside the `Just`.
@@ -461,7 +461,7 @@ It's not a list of `(Ord a) => a -> Ordering` functions, because the first `a` t
 
 We see how by mapping "multi-parameter" functions over functors, we get functors that contain functions inside them.
 So now what can we do with them?
-Well for one, we can map functions that take these functions as parameters over them, because whatever is inside a functor will be given to the function that we're mapping over it as a parameter.
+Well for one, we can map functions that take these functions as arguments over them, because whatever is inside a functor will be given to the function that we're mapping over it as an argument.
 
 ```{.haskell:hs}
 ghci> let a = fmap (*) [1,2,3,4]
@@ -497,7 +497,7 @@ That's why if we know that if a type constructor is part of the `Applicative` ty
 The first method it defines is called `pure`.
 Its type declaration is `pure :: a -> f a`.
 `f` plays the role of our applicative functor instance here.
-Because Haskell has a very good type system and because everything a function can do is take some parameters and return some value, we can tell a lot from a type declaration and this is no exception.
+Because Haskell has a very good type system and because everything a function can do is take some arguments and return some value, we can tell a lot from a type declaration and this is no exception.
 `pure` should take a value of any type and return an applicative functor with that value inside it.
 When we say *inside it*, we're using the box analogy again, even though we've seen that it doesn't always stand up to scrutiny.
 But the `a -> f a` type declaration is still pretty descriptive.
@@ -523,7 +523,7 @@ instance Applicative Maybe where
     (Just f) <*> something = fmap f something
 ```
 
-Again, from the class definition we see that the `f` that plays the role of the applicative functor should take one concrete type as a parameter, so we write `instance Applicative Maybe where` instead of writing `instance Applicative (Maybe a) where`.
+Again, from the class definition we see that the `f` that plays the role of the applicative functor should take one concrete type as an argument, so we write `instance Applicative Maybe where` instead of writing `instance Applicative (Maybe a) where`.
 
 First off, `pure`.
 We said earlier that it's supposed to take something and wrap it in an applicative functor.
@@ -533,12 +533,12 @@ We could have also written `pure x = Just x`.
 Next up, we have the definition for `<*>`.
 We can't extract a function out of a `Nothing`, because it has no function inside it.
 So we say that if we try to extract a function from a `Nothing`, the result is a `Nothing`.
-If you look at the class definition for `Applicative`, you'll see that there's a `Functor` class constraint, which means that we can assume that both of `<*>`'s parameters are functors.
-If the first parameter is not a `Nothing`, but a `Just` with some function inside it, we say that we then want to map that function over the second parameter.
-This also takes care of the case where the second parameter is `Nothing`, because doing `fmap` with any function over a `Nothing` will return a `Nothing`.
+If you look at the class definition for `Applicative`, you'll see that there's a `Functor` class constraint, which means that we can assume that both of `<*>`'s arguments are functors.
+If the first argument is not a `Nothing`, but a `Just` with some function inside it, we say that we then want to map that function over the second argument.
+This also takes care of the case where the second argument is `Nothing`, because doing `fmap` with any function over a `Nothing` will return a `Nothing`.
 
 So for `Maybe`, `<*>` extracts the function from the left value if it's a `Just` and maps it over the right value.
-If any of the parameters is `Nothing`, `Nothing` is the result.
+If any of the arguments is `Nothing`, `Nothing` is the result.
 
 OK cool great.
 Let's give this a whirl.
@@ -584,12 +584,12 @@ So at first, we have `pure (+)`, which is `Just (+)`.
 Next, `Just (+) <*> Just 3` happens.
 The result of this is `Just (3+)`.
 This is because of partial application.
-Only passing `3` to the `+` function results in a function that takes one parameter and adds 3 to it.
+Only passing `3` to the `+` function results in a function that takes one argument and adds 3 to it.
 Finally, `Just (3+) <*> Just 5` is carried out, which results in a `Just 8`.
 
 Isn't this awesome?!
-Applicative functors and the applicative style of doing `pure f <*> x <*> y <*> ...` allow us to take a function that expects parameters that aren't necessarily wrapped in functors and use that function to operate on several values that are in functor contexts.
-The function can take as many parameters as we want, because it's always partially applied step by step between occurrences of `<*>`.
+Applicative functors and the applicative style of doing `pure f <*> x <*> y <*> ...` allow us to take a function that expects arguments that aren't necessarily wrapped in functors and use that function to operate on several values that are in functor contexts.
+The function can take as many arguments as we want, because it's always partially applied step by step between occurrences of `<*>`.
 
 This becomes even more handy and apparent if we consider the fact that `pure f <*> x` equals `fmap f x`.
 This is one of the applicative laws.
@@ -615,7 +615,7 @@ The fact that we used `f` to represent both of those doesn't mean that they some
 :::
 
 By using `<$>`, the applicative style really shines, because now if we want to apply a function `f` between three applicative functors, we can write `f <$> x <*> y <*> z`.
-If the parameters weren't applicative functors but normal values, we'd write `f x y z`.
+If the arguments weren't applicative functors but normal values, we'd write `f x y z`.
 
 Let's take a closer look at how this works.
 We have a value of `Just "johntra"` and a value of `Just "volta"` and we want to join them into one `String` inside a `Maybe` functor.
@@ -671,7 +671,7 @@ Just "Hey"
 What about `<*>`?
 If we look at what `<*>`'s type would be if it were limited only to lists, we get `(<*>) :: [a -> b] -> [a] -> [b]`.
 It's implemented with a [list comprehension](starting-out.html#im-a-list-comprehension).
-`<*>` has to somehow extract the function out of its left parameter and then map it over the right parameter.
+`<*>` has to somehow extract the function out of its left argument and then map it over the right argument.
 But the thing here is that the left list can have zero functions, one function, or several functions inside it.
 The right list can also hold several values.
 That's why we use a list comprehension to draw from both lists.
@@ -685,7 +685,7 @@ ghci> [(*0),(+100),(^2)] <*> [1,2,3]
 
 The left list has three functions and the right list has three values, so the resulting list will have nine elements.
 Every function in the left list is applied to every value in the right one.
-If we have a list of functions that take two parameters, we can apply those functions between two lists.
+If we have a list of functions that take two arguments, we can apply those functions between two lists.
 
 ```{.haskell:hs}
 ghci> [(+),(*)] <*> [1,2] <*> [3,4]
@@ -757,7 +757,7 @@ It would take an I/O action that yields a function as its result and another I/O
 We used `do` syntax to implement it here.
 Remember, `do` syntax is about taking several I/O actions and gluing them into one, which is exactly what we do here.
 
-With `Maybe` and `[]`, we could think of `<*>` as simply extracting a function from its left parameter and then sort of applying it over the right one.
+With `Maybe` and `[]`, we could think of `<*>` as simply extracting a function from its left argument and then sort of applying it over the right one.
 With `IO`, extracting is still in the game, but now we also have a notion of *sequencing*, because we're taking two I/O actions and we're sequencing, or gluing, them into one.
 We have to extract the function from the first I/O action, but to extract a result from an I/O action, it has to be performed.
 
@@ -813,7 +813,7 @@ instance Applicative ((->) r) where
 
 When we wrap a value into an applicative functor with `pure`, the result it yields always has to be that value.
 A minimal default context that still yields that value as a result.
-That's why in the function instance implementation, `pure` takes a value and creates a function that ignores its parameter and always returns that value.
+That's why in the function instance implementation, `pure` takes a value and creates a function that ignores its argument and always returns that value.
 If we look at the type for `pure`, but specialized for the `(->) r` instance, it's `pure :: a -> (r -> a)`.
 
 ```{.haskell:hs}
@@ -856,7 +856,7 @@ The `5` gets fed to each of the three functions and then `\x y z -> [x, y, z]` g
 
 You can think of functions as boxes that contain their eventual results, so doing `k <$> f <*> g` creates a function that will call `k` with the eventual results from `f` and `g`.
 When we do something like `(+) <$> Just 3 <*> Just 5`, we're using `+` on values that might or might not be there, which also results in a value that might or might not be there.
-When we do `(+) <$> (+10) <*> (+5)`, we're using `+` on the future return values of `(+10)` and `(+5)` and the result is also something that will produce a value only when called with a parameter.
+When we do `(+) <$> (+10) <*> (+5)`, we're using `+` on the future return values of `(+10)` and `(+5)` and the result is also something that will produce a value only when called with an argument.
 
 We don't often use functions as applicatives, but this is still really interesting.
 It's not very important that you get how the `(->) r` instance for `Applicative` works, so don't despair if you're not getting this right now.
@@ -917,8 +917,8 @@ Also, the `(,)` function is the same as `\x y -> (x,y)`.
 :::
 
 Aside from `zipWith`, the standard library has functions such as `zipWith3`, `zipWith4`, all the way up to 7.
-`zipWith` takes a function that takes two parameters and zips two lists with it.
-`zipWith3` takes a function that takes three parameters and zips three lists with it, and so on.
+`zipWith` takes a function that takes two arguments and zips two lists with it.
+`zipWith3` takes a function that takes three arguments and zips three lists with it, and so on.
 By using zip lists with an applicative style, we don't have to have a separate zip function for each number of lists that we want to zip together.
 We just use the applicative style to zip together an arbitrary amount of lists with a function, and that's pretty cool.
 
@@ -1018,11 +1018,11 @@ If one of the values was `Nothing`, then the result is also a `Nothing`.
 This is cool when you have a list of `Maybe` values and you're interested in the values only if none of them is a `Nothing`.
 
 When used with functions, `sequenceA` takes a list of functions and returns a function that returns a list.
-In our example, we made a function that took a number as a parameter and passed it to each function in the list and then returned a list of results.
+In our example, we made a function that took a number as an argument and passed it to each function in the list and then returned a list of results.
 `sequenceA [(+3),(+2),(+1)] 3` will call `(+3)` with `3`, `(+2)` with `3` and `(+1)` with `3` and present all those results as a list.
 
-Doing `(+) <$> (+3) <*> (*2)` will create a function that takes a parameter, feeds it to both `(+3)` and `(*2)` and then calls `+` with those two results.
-In the same vein, it makes sense that `sequenceA [(+3),(*2)]` makes a function that takes a parameter and feeds it to all of the functions in the list.
+Doing `(+) <$> (+3) <*> (*2)` will create a function that takes an argument, feeds it to both `(+3)` and `(*2)` and then calls `+` with those two results.
+In the same vein, it makes sense that `sequenceA [(+3),(*2)]` makes a function that takes an argument and feeds it to all of the functions in the list.
 Instead of calling `+` with the results of the functions, a combination of `:` and `pure []` is used to gather those results in a list, which is the result of that function.
 
 Using `sequenceA` is cool when we have a list of functions and we want to feed the same input to all of them and then view the list of results.
@@ -1128,7 +1128,7 @@ We've also learned how to give existing types synonyms with the `type` keyword.
 In this section, we'll be taking a look at how to make new types out of existing data types by using the `newtype` keyword and why we'd want to do that in the first place.
 
 In the previous section, we saw that there are actually more ways for the list type to be an applicative functor.
-One way is to have `<*>` take every function out of the list that is its left parameter and apply it to every value in the list that is on the right, resulting in every possible combination of applying a function from the left list to a value in the right list.
+One way is to have `<*>` take every function out of the list that is its left argument and apply it to every value in the list that is on the right, resulting in every possible combination of applying a function from the left list to a value in the right list.
 
 ```{.haskell:hs}
 ghci> [(+1),(*100),(*5)] <*> [1,2,3]
@@ -1260,7 +1260,7 @@ Isn't that just peachy?
 Now what if we wanted to make the tuple an instance of `Functor` in such a way that when we `fmap` a function over a tuple, it gets applied to the first component of the tuple?
 That way, doing `fmap (+3) (1,1)` would result in `(4,1)`.
 It turns out that writing the instance for that is kind of hard.
-With `Maybe`, we just say `instance Functor Maybe where` because only type constructors that take exactly one parameter can be made an instance of `Functor`.
+With `Maybe`, we just say `instance Functor Maybe where` because only type constructors that take exactly one argument can be made an instance of `Functor`.
 But it seems like there's no way to do something like that with `(a,b)` so that the type parameter `a` ends up being the one that changes when we use `fmap`.
 To get around this, we can `newtype` our tuple in such a way that the second type parameter represents the type of the first component in the tuple:
 
@@ -1462,8 +1462,8 @@ ghci> [] ++ [0.5, 2.5]
 
 It seems that both `*` together with `1` and `++` along with `[]` share some common properties:
 
-* The function takes two parameters.
-* The parameters and the returned value have the same type.
+* The function takes two arguments.
+* The arguments and the returned value have the same type.
 * There exists such a value that doesn't change other values when used with the binary function.
 
 There's another thing that these two operations have in common that may not be as obvious as our previous observations: when we have three or more values and we want to use the binary function to reduce them to a single result, the order in which we apply the binary function to the values doesn't matter.
@@ -1506,11 +1506,11 @@ class Monoid m where
 
 Let's take some time and get properly acquainted with it.
 
-First of all, we see that only concrete types can be made instances of `Monoid`, because the `m` in the type class definition doesn't take any type parameters.
-This is different from `Functor` and `Applicative`, which require their instances to be type constructors which take one parameter.
+First of all, we see that only concrete types can be made instances of `Monoid`, because the `m` in the type class definition doesn't take any type arguments.
+This is different from `Functor` and `Applicative`, which require their instances to be type constructors which take one argument.
 
 The first function is `mempty`.
-It's not really a function, since it doesn't take parameters, so it's a polymorphic constant, kind of like `minBound` from `Bounded`.
+It's not really a function, since it doesn't take arguments, so it's a polymorphic constant, kind of like `minBound` from `Bounded`.
 `mempty` represents the identity value for a particular monoid.
 
 Next up, we have `<>`, which, as you've probably guessed, is the binary function.
@@ -1677,7 +1677,7 @@ ghci> getSum . mconcat . map Sum $ [1,2,3]
 
 Another type which can act like a monoid in two distinct but equally valid ways is `Bool`.
 The first way is to have the *or* function `||` act as the binary function along with `False` as the identity value.
-The way *or* works in logic is that if any of its two parameters is `True`, it returns `True`, otherwise it returns `False`.
+The way *or* works in logic is that if any of its two arguments is `True`, it returns `True`, otherwise it returns `False`.
 So if we use `False` as the identity value, it will return `False` when *or*-ed with `False` and `True` when *or*-ed with `True`.
 The `newtype` constructor `Any` is an instance of `Monoid` in this fashion.
 It's defined like this:
@@ -1710,7 +1710,7 @@ False
 ```
 
 The other way for `Bool` to be an instance of `Monoid` is to kind of do the opposite: have `&&` be the binary function and then make `True` the identity value.
-Logical *and* will return `True` only if both of its parameters are `True`.
+Logical *and* will return `True` only if both of its arguments are `True`.
 This is the `newtype` declaration, nothing fancy:
 
 ```{.haskell:hs}
@@ -1781,7 +1781,7 @@ To gain some intuition for `EQ` being the identity, we can notice that if we wer
 `"oix"` is still alphabetically greater than and `"oin"`.
 
 It's important to note that in the `Monoid` instance for `Ordering`, `x <> y` doesn't equal `y <> x`.
-Because the first parameter is kept unless it's `EQ`, `LT <> GT` will result in `LT`, whereas `GT <> LT` will result in `GT`:
+Because the first argument is kept unless it's `EQ`, `LT <> GT` will result in `LT`, whereas `GT <> LT` will result in `GT`:
 
 ```{.haskell:hs}
 ghci> LT <> GT
@@ -1825,8 +1825,8 @@ ghci> lengthCompare "zen" "ant"
 GT
 ```
 
-Remember, when we use `<>`, its left parameter is always kept unless it's `EQ`, in which case the right one is kept.
-That's why we put the comparison that we consider to be the first, more important criterion as the first parameter.
+Remember, when we use `<>`, its left argument is always kept unless it's `EQ`, in which case the right one is kept.
+That's why we put the comparison that we consider to be the first, more important criterion as the first argument.
 If we wanted to expand this function to also compare for the number of vowels and set this to be the second most important criterion for comparison, we'd just modify it like this:
 
 ```{.haskell:hs}
@@ -1859,7 +1859,7 @@ The `Ordering` monoid is very cool because it allows us to easily compare things
 
 Let's take a look at the various ways that `Maybe a` can be made an instance of `Monoid` and what those instances are useful for.
 
-One way is to treat `Maybe a` as a monoid only if its type parameter `a` is a monoid as well and then implement `<>` in such a way that it uses the `<>` operation of the values that are wrapped with `Just`.
+One way is to treat `Maybe a` as a monoid only if its type argument `a` is a monoid as well and then implement `<>` in such a way that it uses the `<>` operation of the values that are wrapped with `Just`.
 We use `Nothing` as the identity, and so if one of the two values that we're `<>`ing is `Nothing`, we keep the other value.
 Here's the instance declaration:
 
@@ -1890,7 +1890,7 @@ This comes in use when you're dealing with monoids as results of computations th
 Because of this instance, we don't have to check if the computations have failed by seeing if they're a `Nothing` or `Just` value; we can just continue to treat them as normal monoids.
 
 But what if the type of the contents of the `Maybe` aren't an instance of `Monoid`?
-Notice that in the previous instance declaration, the only case where we have to rely on the contents being monoids is when both parameters of `<>` are `Just` values.
+Notice that in the previous instance declaration, the only case where we have to rely on the contents being monoids is when both arguments to `<>` are `Just` values.
 But if we don't know if the contents are monoids, we can't use `<>` between them, so what are we to do?
 Well, one thing we can do is to just discard the second value and keep the first one.
 For this, the `First a` type exists and this is its definition:
@@ -1912,8 +1912,8 @@ instance Monoid (First a) where
 
 Just like we said.
 `mempty` is just a `Nothing` wrapped with the `newtype` constructor `First`.
-If `<>`'s first parameter is a `Just` value, we ignore the second one.
-If the first one is a `Nothing`, then we present the second parameter as a result, regardless of whether it's a `Just` or a `Nothing`:
+If `<>`'s first argument is a `Just` value, we ignore the second one.
+If the first one is a `Nothing`, then we present the second argument as a result, regardless of whether it's a `Just` or a `Nothing`:
 
 ```{.haskell:hs}
 ghci> getFirst $ First (Just 'a') <> First (Just 'b')
@@ -1932,7 +1932,7 @@ ghci> getFirst . mconcat . map First $ [Nothing, Just 9, Just 10]
 Just 9
 ```
 
-If we want a monoid on `Maybe a` such that the second parameter is kept if both parameters of `<>` are `Just` values, `Data.Monoid` provides a `Last a` type, which works like `First a`, only the last non-`Nothing` value is kept when `<>`ing and using `mconcat`:
+If we want a monoid on `Maybe a` such that the second argument is kept if both arguments to `<>` are `Just` values, `Data.Monoid` provides a `Last a` type, which works like `First a`, only the last non-`Nothing` value is kept when `<>`ing and using `mconcat`:
 
 ```{.haskell:hs}
 ghci> getLast . mconcat . map Last $ [Nothing, Just 9, Just 10]
@@ -2047,7 +2047,7 @@ Now we have three monoid values (two from our subtrees and one from applying `f`
 For this purpose we use `<>`, and naturally the left subtree comes first, then the node value and then the right subtree.
 
 Notice that we didn't have to provide the function that takes a value and returns a monoid value.
-We receive that function as a parameter to `foldMap` and all we have to decide is where to apply that function and how to join up the resulting monoids from it.
+We receive that function as an argument to `foldMap` and all we have to decide is where to apply that function and how to join up the resulting monoids from it.
 
 Now that we have a `Foldable` instance for our tree type, we get `foldr` and `foldl` for free!
 Consider this tree:
@@ -2093,7 +2093,7 @@ False
 ```
 
 All of the nodes in our tree would hold the value `Any False` after having the function in the lambda applied to them.
-But to end up `True`, `<>` for `Any` has to have at least one `True` value as a parameter.
+But to end up `True`, `<>` for `Any` has to have at least one `True` value as an argument.
 That's why the final result is `False`, which makes sense because no value in our tree is greater than `15`.
 
 We can also easily turn our tree into a list by doing a `foldMap` with the `\x -> [x]` function.

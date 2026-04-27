@@ -668,7 +668,7 @@ instance Monad ((->) r) where
 
 We've already seen how `pure` is implemented for functions, and `return` is pretty much the same thing as `pure`.
 It takes a value and puts it in a minimal context that always has that value as its result.
-And the only way to make a function that always has a certain value as its result is to make it completely ignore its parameter.
+And the only way to make a function that always has a certain value as its result is to make it completely ignore its argument.
 
 The implementation for `>>=` seems a bit cryptic, but it's really not all that.
 When we use `>>=` to feed a monadic value to a function, the result is always a monadic value.
@@ -722,8 +722,8 @@ addStuff x = let
 
 We see that the reader monad allows us to treat functions as values with a context.
 We can act as if we already know what the functions will return.
-It does this by gluing functions together into one function and then giving that function's parameter to all of the functions that it was glued from.
-So if we have a lot of functions that are all just missing one parameter and they'd eventually be applied to the same thing, we can use the reader monad to sort of extract their future results and the `>>=` implementation will make sure that it all works out.
+It does this by gluing functions together into one function and then giving that function's argument to all of the functions that it was glued from.
+So if we have a lot of functions that are all just missing one argument and they'd eventually be applied to the same thing, we can use the reader monad to sort of extract their future results and the `>>=` implementation will make sure that it all works out.
 
 ## Tasteful stateful computations {#state}
 
@@ -735,7 +735,7 @@ However, some problems are inherently stateful in that they rely on some state t
 While such problems aren't a problem for Haskell, they can be a bit tedious to model sometimes.
 That's why Haskell features a thing called the state monad, which makes dealing with stateful problems a breeze while still keeping everything nice and pure.
 
-[When we were dealing with random numbers](input-and-output.html#randomness), we dealt with functions that took a random generator as a parameter and returned a random number and a new random generator.
+[When we were dealing with random numbers](input-and-output.html#randomness), we dealt with functions that took a random generator as an argument and returned a random number and a new random generator.
 If we wanted to generate several random numbers, we always had to use the random generator that a previous function returned along with its result.
 When making a function that takes a `StdGen` and tosses a coin three times based on that generator, we had to do this:
 
@@ -1219,7 +1219,7 @@ Using this applicative style makes things pretty easy.
 
 So it's kind of like `fmap`, only the function itself is in a context.
 We have to somehow extract it from the context and map it over the `f a` value and then assemble the context back together.
-Because all functions are curried in Haskell by default, we can use the combination of `<$>` and `<*>` to apply functions that take several parameters between applicative values.
+Because all functions are curried in Haskell by default, we can use the combination of `<$>` and `<*>` to apply functions that take several arguments between applicative values.
 
 Anyway, it turns out that just like `fmap`, `<*>` can also be implemented by using only what the `Monad` type class gives us.
 The `ap` function is basically `<*>`, only it has a `Monad` constraint instead of an `Applicative` one.

@@ -110,7 +110,7 @@ addVectors (x1, y1) (x2, y2) = (x1 + x2, y1 + y2)
 There we go!
 Much better.
 Note that this is already a catch-all pattern.
-The type of `addVectors` (in both cases) is `addVectors :: (Num a) => (a, a) -> (a, a) - > (a, a)`, so we are guaranteed to get two pairs as parameters.
+The type of `addVectors` (in both cases) is `addVectors :: (Num a) => (a, a) -> (a, a) - > (a, a)`, so we are guaranteed to get two pairs as arguments.
 
 `fst` and `snd` extract the components of pairs.
 But what about triples?
@@ -303,7 +303,7 @@ If all the guards of a function evaluate to `False` (and we haven't provided an 
 That's how patterns and guards play nicely together.
 If no suitable guards or patterns are found, an error is thrown.
 
-Of course we can use guards with functions that take as many parameters as we want.
+Of course we can use guards with functions that take as many arguments as we want.
 Instead of having the user calculate the density of the substance on their own before calling the function, let's modify this function so that it takes a mass (in grams) and volume (in liters).
 
 ```{.haskell:hs}

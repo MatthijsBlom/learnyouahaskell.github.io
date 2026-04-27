@@ -5,7 +5,7 @@ title: "Higher Order Functions"
 
 ![sun](assets/images/higher-order-functions/sun.png){.right width=203 height=183}
 
-Haskell functions can take functions as parameters and return functions as return values.
+Haskell functions can take functions as arguments and return functions as return values.
 A function that does either of those is called a higher order function.
 Higher order functions aren't just a part of the Haskell experience, they pretty much are the Haskell experience.
 It turns out that if you want to define computations by defining what stuff *is* instead of defining steps that change some state and maybe looping them, higher order functions are indispensable.
@@ -13,15 +13,15 @@ They're a really powerful way of solving problems and thinking about programs.
 
 ## Curried functions {#curried-functions}
 
-Every function in Haskell officially takes only one parameter.
-So how is it possible that we defined and used several functions that take more than one parameter so far?
+Every function in Haskell officially takes only one argument.
+So how is it possible that we defined and used several functions that take more than one argument so far?
 Well, it's a clever trick!
-All the functions that accepted *several parameters* so far have been **curried functions**.
+All the functions that accepted *several arguments* so far have been **curried functions**.
 What does that mean?
 You'll understand it best with an example.
 Let's take our good friend, the `max` function.
-It looks like it takes two parameters and returns the one that's bigger.
-Doing `max 4 5` first creates a function that takes a parameter and returns either `4` or that parameter, depending on which is bigger.
+It looks like it takes two arguments and returns the one that's bigger.
+Doing `max 4 5` first creates a function that takes an argument and returns either `4` or that argument, depending on which is bigger.
 Then, `5` is passed to that function and that produces our desired result.
 That sounds like a mouthful but it's actually a really cool concept.
 The following two calls are equivalent:
@@ -44,8 +44,8 @@ That could be read as: `max` takes an `a` and returns (that's the `->`) a functi
 That's why the return type and the parameters of functions are all simply separated with arrows.
 
 So how is that beneficial to us?
-Simply speaking, if we call a function with too few parameters, we get back a **partially applied** function, meaning a function that takes as many parameters as we left out.
-Using partial application (calling functions with too few parameters, if you will) is a neat way to create functions on the fly so we can pass them to another function or to seed them with some data.
+Simply speaking, if we call a function with too few arguments, we get back a **partially applied** function, meaning a function that takes as many arguments as we left out.
+Using partial application (calling functions with too few arguments, if you will) is a neat way to create functions on the fly so we can pass them to another function or to seed them with some data.
 
 Take a look at this offensively simple function:
 
@@ -56,11 +56,11 @@ multThree x y z = x * y * z
 
 What really happens when we do `multThree 3 5 9` or `((multThree 3) 5) 9`?
 First, `3` is passed to `multThree`, because they're separated by a space.
-That creates a function that takes one parameter and returns a function.
-So then that is applied to `5`, which creates a function that will take a parameter and multiply it by 15.
+That creates a function that takes one argument and returns a function.
+So then that is applied to `5`, which creates a function that will take an argument and multiply it by 15.
 `9` is passed to that function and the result is 135 or something.
 Remember that this function's type could also be written as `multThree :: (Num a) => a -> (a -> (a -> a))`.
-The thing before the `->` is the parameter that a function takes and the thing after it is what it returns.
+The thing before the `->` is the argument that a function takes and the thing after it is what it returns.
 So our function takes an `a` and returns a function of type `(Num a) => a -> (a -> a)`.
 Similarly, this function takes an `a` and returns a function of type `(Num a) => a -> a`.
 And this function, finally, just takes an `a` and returns an `a`.
@@ -75,7 +75,7 @@ ghci> multWithEighteen 10
 180
 ```
 
-By calling functions with too few parameters, so to speak, we're creating new functions on the fly.
+By calling functions with too few arguments, so to speak, we're creating new functions on the fly.
 What if we wanted to create a function that takes a number and compares it to `100`?
 We could do something like this:
 
@@ -108,8 +108,8 @@ Make sure you really understand how curried functions and partial application wo
 :::
 
 Infix functions can also be partially applied by using sections.
-To section an infix function, simply surround it with parentheses and supply a parameter on only one side.
-That creates a function that takes one parameter and then applies it to the side that's missing an operand.
+To section an infix function, simply surround it with parentheses and supply an argument on only one side.
+That creates a function that takes one argument and then applies it to the side that's missing an operand.
 An insultingly trivial function:
 
 ```{.haskell:hs}
@@ -128,7 +128,7 @@ isUpperAlphanum = (`elem` ['A'..'Z'])
 The only special thing about sections is using `-`.
 From the definition of sections, `(-4)` would result in a function that takes a number and subtracts 4 from it.
 However, for convenience, `(-4)` means minus four.
-So if you want to make a function that subtracts 4 from the number it gets as a parameter, partially apply the `subtract` function like so: `(subtract 4)`.
+So if you want to make a function that subtracts 4 from the number it gets as an argument, partially apply the `subtract` function like so: `(subtract 4)`.
 
 What happens if we try to just do `multThree 3 4` in GHCi instead of binding it to a name or passing it to another function?
 
@@ -147,7 +147,7 @@ And the textual representation of `2` is just the string `"2"`, which then gets 
 
 ## Some higher-orderism is in order {#higher-orderism}
 
-Functions can take functions as parameters and also return functions.
+Functions can take functions as arguments and also return functions.
 To illustrate this, we're going to make a function that takes a function and then applies it twice to something!
 
 ```{.haskell:hs}
@@ -162,14 +162,14 @@ Before, we didn't need parentheses because `->` is naturally right-associative.
 However, here, they're mandatory.
 They indicate that the first parameter is a function that takes something and returns that same thing.
 The second parameter is something of that type also and the return value is also of the same type.
-We could read this type declaration in the curried way, but to save ourselves a headache, we'll just say that this function takes two parameters and returns one thing.
-The first parameter is a function (of type `a -> a`) and the second is that same `a`.
+We could read this type declaration in the curried way, but to save ourselves a headache, we'll just say that this function takes two arguments and returns one thing.
+The first argument would be a function (of type `a -> a`) and the second would be that same `a`.
 The function can also be `Int -> Int` or `String -> String` or whatever.
-But then, the second parameter has to also be of that type.
+But then, the second argument has to also be of that type.
 
 ::: {.hintbox}
-**Note:** From now on, we'll say that functions take several parameters despite each function actually taking only one parameter and returning partially applied functions until we reach a function that returns a solid value.
-So for simplicity's sake, we'll say that `a -> a -> a` takes two parameters, even though we know what's really going on under the hood.
+**Note:** From now on, we'll say that functions take several arguments despite each function actually taking only one argument and returning partially applied functions until we reach a function that returns a solid value.
+So for simplicity's sake, we'll say that `a -> a -> a` takes two arguments, even though we know what's really going on under the hood.
 :::
 
 The body of the function is pretty simple.
@@ -190,11 +190,11 @@ ghci> applyTwice (3:) [1]
 ```
 
 The awesomeness and usefulness of partial application is evident.
-If our function requires us to pass it a function that takes only one parameter, we can just partially apply a function to the point where it takes only one more parameter and then pass it.
+If our function requires us to pass it a function that takes only one argument, we can just partially apply a function to the point where it takes only one more argument and then pass it.
 
 Now we're going to use higher order programming to implement a really useful function that's in the standard library.
 It's called `zipWith`.
-It takes a function and two lists as parameters and then joins the two lists by applying the function between corresponding elements.
+It takes a function and two lists as arguments and then joins the two lists by applying the function between corresponding elements.
 Here's how we'll implement it:
 
 ```{.haskell:hs}
@@ -212,11 +212,11 @@ The result is also a list.
 The first has to be a list of `a`'s, because the joining function takes `a`'s as its first argument.
 The second has to be a list of `b`'s, because the second parameter of the joining function is of type `b`.
 The result is a list of `c`'s.
-If the type declaration of a function says it accepts an `a -> b -> c` function as a parameter, it will also accept an `a -> a -> a` function, but not the other way around!
+If the type declaration of a function says it accepts an `a -> b -> c` function as an argument, it will also accept an `a -> a -> a` function, but not the other way around!
 Remember that when you're making functions, especially higher order ones, and you're unsure of the type, you can just try omitting the type declaration and then checking what Haskell infers it to be by using `:t`.
 
 The action in the function is pretty similar to the normal `zip`.
-The base cases are the same, only there's an extra argument, the joining function, but that argument doesn't matter in the base cases, so we just use a `_` for it.
+The base cases are the same, only there's an extra parameter, the joining function, but that parameter doesn't matter in the base cases, so we just use a `_` for it.
 And function body at the last pattern is also similar to `zip`, only it doesn't do `(x,y)`, but `f x y`.
 A single higher order function can be used for a multitude of different tasks if it's general enough.
 Here's a little demonstration of all the different things our `zipWith'` function can do:
@@ -261,7 +261,7 @@ flip' f y x = f x y
 ```
 
 Here, we take advantage of the fact that functions are curried.
-When we call `flip' f` without the parameters `y` and `x`, it will return an `f` that takes those two parameters but calls them flipped.
+When we call `flip' f` without the arguments `y` and `x`, it will return an `f` that takes those two arguments but calls them flipped.
 Even though flipped functions are usually passed to other functions, we can take advantage of currying when making higher-order functions by thinking ahead and writing what their end result would be if they were called fully applied.
 
 ```{.haskell:ghci}
@@ -469,10 +469,10 @@ If we wanted to return a more general `Num a`, we could have used `fromIntegral`
 :::
 
 Using `map`, we can also do stuff like `map (*) [0..]`, if not for any other reason than to illustrate how currying works and how (partially applied) functions are real values that you can pass around to other functions or put into lists (you just can't turn them to strings).
-So far, we've only mapped functions that take one parameter over lists, like `map (*2) [0..]` to get a list of type `(Num a) => [a]`, but we can also do `map (*) [0..]` without a problem.
+So far, we've only mapped functions that take one argument over lists, like `map (*2) [0..]` to get a list of type `(Num a) => [a]`, but we can also do `map (*) [0..]` without a problem.
 What happens here is that the number in the list is passed to the function `*`, which has a type of `(Num a) => a -> a -> a`.
-Passing only one parameter to a function that takes two parameters returns a function that takes one parameter.
-If we map `*` over the list `[0..]`, we get back a list of functions that only take one parameter, so `(Num a) => [a -> a]`.
+Passing only one argument to a function that takes two arguments returns a function that takes one argument.
+If we map `*` over the list `[0..]`, we get back a list of functions that only take one argument, so `(Num a) => [a -> a]`.
 `map (*) [0..]` produces a list like the one we'd get by writing `[(0*),(1*),(2*),(3*),(4*),(5*)..`.
 
 ```{.haskell:hs}
@@ -512,7 +512,7 @@ People who are not well acquainted with how currying and partial application wor
 For instance, the expressions `map (+3) [1,6,3,2]` and `map (\x -> x + 3) [1,6,3,2]` are equivalent since both `(+3)` and `(\x -> x + 3)` are functions that take a number and add 3 to it.
 Needless to say, making a lambda in this case is stupid since using partial application is much more readable.
 
-Like normal functions, lambdas can take any number of parameters:
+Like normal functions, lambdas can take any number of arguments:
 
 ```{.haskell:ghci}
 ghci> zipWith (\a b -> (a * 30 + 3) / b) [5,4,3,2,1] [1,2,3,4,5]
@@ -554,8 +554,8 @@ flip' f = \x y -> f y x
 ```
 
 Even though that's the same as writing `flip' f x y = f y x`, we make it obvious that this will be used for producing a new function most of the time.
-The most common use case with `flip` is calling it with just the function parameter and then passing the resulting function on to a map or a filter.
-So use lambdas in this way when you want to make it explicit that your function is mainly meant to be partially applied and passed on to a function as a parameter.
+The most common use case with `flip` is calling it with just the function argument and then passing the resulting function on to a map or a filter.
+So use lambdas in this way when you want to make it explicit that your function is mainly meant to be partially applied and passed on to a function as an argument.
 
 ## Only folds and horses {#folds}
 
@@ -569,7 +569,7 @@ These functions are called folds.
 They're sort of like the `map` function, only they reduce the list to some single value.
 
 A fold takes a binary function, a starting value (I like to call it the accumulator) and a list to fold up.
-The binary function itself takes two parameters.
+The binary function itself takes two arguments.
 The binary function is called with the accumulator and the first (or last) element and produces a new accumulator.
 Then, the binary function is called again with the new accumulator and the now new first (or last) element, and so on.
 Once we've walked over the whole list, only the accumulator remains, which is what we've reduced the list to.
@@ -598,7 +598,7 @@ ghci> sum' [3,5,2,1]
 Let's take an in-depth look into how this fold happens.
 `\acc x -> acc + x` is the binary function.
 `0` is the starting value and `xs` is the list to be folded up.
-Now first, `0` is used as the `acc` parameter to the binary function and `3` is used as the `x` (or the current element) parameter.
+Now first, `0` is used as the `acc` argument to the binary function and `3` is used as the `x` (or the current element) argument.
 `0 + 3` produces a `3` and it becomes the new accumulator value, so to speak.
 Next up, `3` is used as the accumulator value and `5` as the current element and `8` becomes the new accumulator value.
 Moving forward, `8` is the accumulator value, `2` is the current element, the new accumulator value is `10`.
@@ -847,7 +847,7 @@ That's all very well, but how does this help us?
 Most of the time, it's a convenience function so that we don't have to write so many parentheses.
 Consider the expression `sum (map sqrt [1..130])`.
 Because `$` has such a low precedence, we can rewrite that expression as `sum $ map sqrt [1..130]`, saving ourselves precious keystrokes!
-When a `$` is encountered, the expression on its right is passed as the parameter to the function on its left.
+When a `$` is encountered, the expression on its right is passed as the argument to the function on its left.
 How about `sqrt 3 + 4 + 9`?
 This adds together 9, 4 and the square root of 3.
 If we want to get the square root of *3 + 4 + 9*, we'd have to write `sqrt (3 + 4 + 9)` or if we use `$` we can write it as `sqrt $ 3 + 4 + 9` because `$` has the lowest precedence of any operator.
@@ -880,8 +880,8 @@ f . g = \x -> f (g x)
 ![notes](assets/images/higher-order-functions/notes.png){.left width=230 height=198}
 
 Mind the type declaration.
-`f` must take as its parameter a value that has the same type as `g`'s return value.
-So the resulting function takes a parameter of the same type that `g` takes and returns a value of the same type that `f` returns.
+`f` must take as its argument a value that has the same type as `g`'s return value.
+So the resulting function takes an argument of the same type that `g` takes and returns a value of the same type that `f` returns.
 The expression `negate . (* 3)` returns a function that takes a number, multiplies it by 3 and then negates it.
 
 One of the uses for function composition is making functions on the fly to pass to other functions.
@@ -919,14 +919,14 @@ ghci> map (negate . sum . tail) [[1..5],[3..6],[1..7]]
 [-14,-15,-27]
 ```
 
-But what about functions that take several parameters?
-Well, if we want to use them in function composition, we usually have to partially apply them just so much that each function takes just one parameter.
+But what about functions that take several arguments?
+Well, if we want to use them in function composition, we usually have to partially apply them just so much that each function takes just one argument.
 `sum (replicate 5 (max 6.7 8.9))` can be rewritten as `(sum . replicate 5 . max 6.7) 8.9` or as `sum . replicate 5 . max 6.7 $ 8.9`.
 What goes on in here is this: a function that takes what `max 6.7` takes and applies `replicate 5` to it is created.
 Then, a function that takes the result of that and does a sum of it is created.
 Finally, that function is called with `8.9`.
 But normally, you just read that as: pass `8.9` to `max 6.7`, then apply `replicate 5` to that and then apply `sum` to that.
-If you want to rewrite an expression with a lot of parentheses by using function composition, you can start by putting the last parameter of the innermost function after a `$` and then just composing all the other function calls, writing them without their last parameter and putting dots between them.
+If you want to rewrite an expression with a lot of parentheses by using function composition, you can start by putting the last argument to the innermost function after a `$` and then just composing all the other function calls, writing them without their last argument and putting dots between them.
 If you have `replicate 100 (product (map (*3) (zipWith max [1,2,3,4,5] [4,5,6,7,8])))`, you can write it as `replicate 100 . product . map (*3) . zipWith max [1,2,3,4,5] $ [4,5,6,7,8]`.
 If the expression ends with three parentheses, chances are that if you translate it into function composition, it'll have three composition operators.
 

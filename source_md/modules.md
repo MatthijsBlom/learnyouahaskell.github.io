@@ -453,9 +453,9 @@ ghci> findIndices (`elem` ['A'..'Z']) "Where Are The Caps?"
 ```
 
 We already covered `zip` and `zipWith`.
-We noted that they zip together two lists, either in a tuple or with a binary function (meaning such a function that takes two parameters).
+We noted that they zip together two lists, either in a tuple or with a binary function (meaning such a function that takes two arguments).
 But what if we want to zip together three lists?
-Or zip three lists with a function that takes three parameters?
+Or zip three lists with a function that takes three arguments?
 Well, for that, we have `zip3`{.label .function}, `zip4`{.label .function}, etc. and `zipWith3`{.label .function}, `zipWith4`{.label .function}, etc.
 These variants go up to 7.
 While this may look like a hack, it works out pretty fine, because there aren't many times when you want to zip 8 lists together.
@@ -581,7 +581,7 @@ ghci> insert 3 [1,2,4,3,2,1]
 [1,2,3,4,3,2,1]
 ```
 
-What `length`, `take`, `drop`, `splitAt`, `!!` and `replicate` have in common is that they take an `Int` as one of their parameters (or return an `Int`), even though they could be more generic and usable if they just took any type that's part of the `Integral` or `Num` typeclasses (depending on the functions).
+What `length`, `take`, `drop`, `splitAt`, `!!` and `replicate` have in common is that they take an `Int` as one of their arguments (or return an `Int`), even though they could be more generic and usable if they just took any type that's part of the `Integral` or `Num` typeclasses (depending on the functions).
 They do that for historical reasons.
 However, fixing that would probably break a lot of existing code.
 That's why `Data.List` has their more generic equivalents, named `genericLength`{.label .function}, `genericTake`{.label .function}, `genericDrop`{.label .function}, `genericSplitAt`{.label .function}, `genericIndex`{.label .function} and `genericReplicate`{.label .function}.

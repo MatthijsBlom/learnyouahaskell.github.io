@@ -195,7 +195,7 @@ So essentially it's like doing `replicate 5 3`.
 How about if we zip something with an empty list?
 Well, we get an empty list back then.
 So there's our base case.
-However, `zip` takes two lists as parameters, so there are actually two base cases.
+However, `zip` takes two lists as arguments, so there are actually two base cases.
 
 ```{.haskell:hs}
 zip' :: [a] -> [b] -> [(a,b)]

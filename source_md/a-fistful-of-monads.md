@@ -349,14 +349,14 @@ ghci> landLeft 2 (landRight 1 (landLeft 1 (0,0)))
 When we apply the function `landLeft 1` to `(0,0)` we get `(1,0)`.
 Then, we land a bird on the right side, resulting in `(1,1)`.
 Finally two birds land on the left side, resulting in `(3,1)`.
-We apply a function to something by first writing the function and then writing its parameter, but here it would be better if the pole went first and then the landing function.
+We apply a function to something by first writing the function and then writing its argument, but here it would be better if the pole went first and then the landing function.
 If we make a function like this:
 
 ```{.haskell:hs}
 x -: f = f x
 ```
 
-We can apply functions by first writing the parameter and then the function:
+We can apply functions by first writing the argument and then the function:
 
 ```{.haskell:hs}
 ghci> 100 -: (*3)
@@ -498,7 +498,7 @@ Now that we have a `Nothing`, it gets fed to `landRight (-2)`, but because it's 
 
 We couldn't have achieved this by just using `Maybe` as an applicative.
 If you try it, you'll get stuck, because applicative functors don't allow for the applicative values to interact with each other very much.
-They can, at best, be used as parameters to a function by using the applicative style.
+They can, at best, be used as arguments to a function by using the applicative style.
 The applicative operators will fetch their results and feed them to the function in a manner appropriate for each applicative and then put the final applicative value together, but there isn't that much interaction going on between them.
 Here, however, each step relies on the previous one's result.
 On every landing, the possible result from the previous one is examined and the pole is checked for balance.
@@ -531,7 +531,7 @@ Instead of making functions that ignore their input and just return a predetermi
 m >> n = m >>= \_ -> n
 ```
 
-Normally, passing some value to a function that ignores its parameter and always just returns some predetermined value would always result in that predetermined value.
+Normally, passing some value to a function that ignores its argument and always just returns some predetermined value would always result in that predetermined value.
 With monads however, their context and meaning has to be considered as well.
 Here's how `>>` acts with `Maybe`:
 
@@ -678,7 +678,7 @@ ghci> Just 9 >>= (\x -> Just (x > 8))
 Just True
 ```
 
-Because the left parameter of `>>=` is a `Just` value, the lambda is applied to `9` and the result is a `Just True`.
+Because the left argument to `>>=` is a `Just` value, the lambda is applied to `9` and the result is a `Just True`.
 If we rewrite this in `do` notation, we get:
 
 ```{.haskell:hs}
@@ -1295,7 +1295,7 @@ Composing two functions is implemented like so:
 f . g = (\x -> f (g x))
 ```
 
-If the type of `g` is `a -> b` and the type of `f` is `b -> c`, we arrange them into a new function which has a type of `a -> c`, so that its parameter is passed between those functions.
+If the type of `g` is `a -> b` and the type of `f` is `b -> c`, we arrange them into a new function which has a type of `a -> c`, so that its argument is passed between those functions.
 Now what if those two functions were monadic, that is, what if the values they returned were monadic values?
 If we had a function of type `a -> m b`, we couldn't just pass its result to a function of type `b -> m c`, because that function accepts a normal `b`, not a monadic one.
 We could however, use `>>=` to make that happen.
