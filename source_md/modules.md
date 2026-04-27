@@ -649,7 +649,12 @@ ghci> sortBy (compare `on` length) xs
 Awesome!
 ``compare `on` length`` ... man, that reads almost like real English!
 If you're not sure how exactly the `on` works here, ``compare `on` length`` is the equivalent of ``\x y -> length x `compare` length y``.
-When you're dealing with *By* functions that take an equality function, you usually do ``(==) `on` something`` and when you're dealing with *By* functions that take an ordering function, you usually do ``compare `on` something``.
+
+Actually, we can do even better.
+The pattern ``compare `on` f`` is fairly common, so there is a shorthand for that as well: `comparing`{.label .function} from `Data.Ord`.
+With it, instead of using `on` we can write `sortBy (comparing length)`.
+
+When you're dealing with *By* functions that take an equality function, you usually do ``(==) `on` something`` and when you're dealing with *By* functions that take an ordering function, you usually are `comparing something`.
 
 ## Data.Char {#data-char}
 
