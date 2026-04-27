@@ -266,13 +266,13 @@ ghci> dropWhile (<3) [1,2,2,2,3,4,5,4,3,2,1]
 ```
 
 We're given a list that represents the value of a stock by date.
-The list is made of tuples whose first component is the stock value, the second is the year, the third is the month and the fourth is the date.
+The list is made of tuples whose first component is the stock value, the second is the date.
 We want to know when the stock value first exceeded one thousand dollars!
 
 ```{.haskell:ghci}
-ghci> let stock = [(994.4,2008,9,1),(995.2,2008,9,2),(999.2,2008,9,3),(1001.4,2008,9,4),(998.3,2008,9,5)]
-ghci> head (dropWhile (\(val,y,m,d) -> val < 1000) stock)
-(1001.4,2008,9,4)
+ghci> let stock = [(994.4,"2008-9-1"),(995.2,"2008-9-2"),(999.2,"2008-9-3"),(1001.4,"2008-9-4"),(998.3,"2008-9-5")]
+ghci> head $ dropWhile (\(val,_) -> val < 1000) stock
+(1001.4,"2008-9-4")
 ```
 
 `span`{.label .function} is kind of like `takeWhile`, only it returns a pair of lists.
@@ -411,13 +411,13 @@ Its result is `Maybe a`.
 That's kind of like having the type of `[a]`, only a value of the type `Maybe a` can contain either no elements or one element, whereas a list can contain no elements, one element, or several elements.
 
 Remember when we were searching for the first time our stock went over $1000.
-We did `head (dropWhile (\(val,y,m,d) -> val < 1000) stock)`.
+We did `head (dropWhile (\(val,_) -> val < 1000) stock)`.
 Remember that `head` is not really safe.
 What would happen if our stock never went over $1000?
 Our application of `dropWhile` would return an empty list and getting the head of an empty list would result in an error.
-However, if we rewrote that as `find (\(val,y,m,d) -> val > 1000) stock`, we'd be much safer.
+However, if we rewrote that as `find (\(val,_) -> val > 1000) stock`, we'd be much safer.
 If our stock never went over $1000 (so if no element satisfied the predicate), we'd get back a `Nothing`.
-But if there was a valid answer in that list, we'd get, say, `Just (1001.4,2008,9,4)`.
+But if there was a valid answer in that list, we'd get, say, `Just (1001.4,"2008-9-4")`.
 
 `elemIndex`{.label .function} is kind of like `elem`, only it doesn't return a boolean value.
 It maybe returns the index of the element we're looking for.
