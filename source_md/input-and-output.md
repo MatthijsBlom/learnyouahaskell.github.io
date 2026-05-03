@@ -141,6 +141,15 @@ You can think of an I/O action as a box with little feet that will go out into t
 Once it's fetched that data for you, the only way to open the box and get the data inside it is to use the `<-` construct.
 And if we're taking data out of an I/O action, we can only take it out when we're inside another I/O action.
 This is how Haskell manages to neatly separate the pure and impure parts of our code.
+
+::: {.hintbox}
+If you find that too vague, here's what it means concretely.
+Suppose you could take an I/O action, run it, and then return its result.
+Then you could write a function `unwrap :: IO a -> a` which does exactly that.
+Now here's the thing: **no such function exists, and it is impossible to write one**. 
+Whatever you do, if you ever use the result of one or more I/O actions, the result of your work will always have type `IO …`.
+:::
+
 `getLine` is in a sense impure because its result value is not guaranteed to be the same when performed twice.
 That's why it's sort of *tainted* with the `IO` type constructor and we can only get that data out in I/O code.
 And because I/O code is tainted too, any computation that depends on tainted I/O data will have a tainted result.
