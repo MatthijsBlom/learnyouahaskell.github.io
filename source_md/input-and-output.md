@@ -117,7 +117,6 @@ By putting them together with `do` syntax, we glued them into one I/O action.
 The action that we got has a type of `IO ()`, because that's the type of the last I/O action inside.
 
 Because of that, `main` always has a type signature of <code>main :: IO *something*</code>, where <code>*something*</code> is some concrete type.
-By convention, we don't usually specify a type declaration for `main`.
 
 An interesting thing that we haven't met before is the third line, which states `name <- getLine`.
 It looks like it reads a line from the input and stores it into a variable called `name`.
@@ -600,7 +599,6 @@ main = do
 ```
 
 The `(\a -> do ... )` is a function that takes a number and returns an I/O action.
-We have to surround it with parentheses, otherwise the lambda thinks the last two I/O actions belong to it.
 Notice that we do `return color` in the inside `do` block.
 We do that so that the I/O action which the `do` block defines has the result of our color contained within it.
 We actually didn't have to do that, because `getLine` already has that contained within it.
