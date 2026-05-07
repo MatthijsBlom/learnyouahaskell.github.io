@@ -930,7 +930,7 @@ If you want to rewrite an expression with a lot of parentheses by using function
 If you have `replicate 100 (product (map (*3) (zipWith max [1,2,3,4,5] [4,5,6,7,8])))`, you can write it as `replicate 100 . product . map (*3) . zipWith max [1,2,3,4,5] $ [4,5,6,7,8]`.
 If the expression ends with three parentheses, chances are that if you translate it into function composition, it'll have three composition operators.
 
-Another common use of function composition is defining functions in the so-called point free style (also called the point*less* style).
+Another common use of function composition is defining functions in the so-called point-free style (also called the point*less* style).
 Take for example this function that we wrote earlier:
 
 ```{.haskell:hs}
@@ -940,8 +940,8 @@ sum' xs = foldl (+) 0 xs
 
 The `xs` is exposed on both sides, right?
 Because of currying, we can omit the `xs` on both sides, because calling `foldl (+) 0` creates a function that takes a list.
-Writing the function as `sum' = foldl (+) 0` is called writing it in point free style.
-How would we write this in point free style?
+Writing the function as `sum' = foldl (+) 0` is called writing it in point-free style.
+How would we write this in point-free style?
 
 ```{.haskell:hs}
 fn x = ceiling (negate (tan (cos (max 50 x))))
@@ -958,9 +958,9 @@ fn = ceiling . negate . tan . cos . max 50
 ```
 
 Excellent!
-Many times, a point free style is more readable and concise, because it makes you think about functions and what kind of functions composing them results in instead of thinking about data and how it's shuffled around.
+Many times, a point-free style is more readable and concise, because it makes you think about functions and what kind of functions composing them results in instead of thinking about data and how it's shuffled around.
 You can take simple functions and use composition as glue to form more complex functions.
-However, many times, writing a function in point free style can be less readable if a function is too complex.
+However, many times, writing a function in point-free style can be less readable if a function is too complex.
 That's why making long chains of function composition is discouraged, although I plead guilty of sometimes being too composition-happy.
 The preferred style is to use `let` bindings to give labels to intermediary results or split the problem into sub-problems and then put it together so that the function makes sense to someone reading it instead of just making a huge composition chain.
 
